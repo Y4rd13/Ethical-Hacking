@@ -26,3 +26,16 @@ sudo apt-get update && sudo apt-get install -y dkms linux-headers-$(uname -r)
 sudo apt update && sudo apt upgrade -y
 reboot
 ```
+
+## Install Guest Additions in a VirtualBox VM
+
+    sudo apt-get install virtualbox-guest-additions-iso
+
+    cd /media/kali/VBox_GAs_6.1.16
+    sudo ./VBoxLinuxAdditions.run
+    reboot
+
+    # also you can use
+    sudo apt install build-essential dkms
+    # or
+    sudo apt install build-essential dkms linux-headers-$(uname -r)
