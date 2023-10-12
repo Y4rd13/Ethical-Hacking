@@ -97,3 +97,16 @@ reboot
 | `chmod u+x`                 | Añade permiso de ejecución al propietario| `chmod u+x script.sh`                    |
 | `chmod g-w`                 | Quita permiso de escritura al grupo      | `chmod g-w file.txt`                     |
 | `chmod o-r`                 | Quita permiso de lectura a otros         | `chmod o-r file.txt`                     |
+
+
+## TOR
+
+### Install TOR
+
+    sudo apt install tor -y
+
+### Create a new user
+
+You don't want to compromise your system by running Tor as root. So, create a new user for Tor.
+
+    sudo adduser {{test_user}}
