@@ -180,19 +180,34 @@ Check your DNS leaks at [DNS Leak Test](https://www.dnsleaktest.com/)
 
 ### ⚙️ Import custom proxy to proxychains
 
-For example, go to:
-  - [ProxyScrape](https://proxyscrape.com/free-proxy-list) and copy a proxy.
+_Note: Netherlands have great privacy policy, so you can use them. Same with Germany._
 
-  - [Socks Proxy List](https://www.socks-proxy.net/)
+For example, go to (and copy a proxy):
 
-    _Note: Netherlands have great privacy policy, so you can use them. Same with Germany._
+  - [GithubRepo: ProxyList](https://github.com/jetkai/proxy-list) : An automatic updated list of free SOCKS4, SOCKS5, HTTP & HTTPS proxies in JSON, TXT, CSV, XML & YAML format. Proxies are online at the time of testing & updated every hour. Geolocation & detection status is also available.
+    - [online-proxies/json/proxies-advanced.json](https://raw.githubusercontent.com/jetkai/proxy-list/main/online-proxies/json/proxies-advanced.json)
 
-    ```
-    sudo nano /etc/proxychains4.conf
+  - [ProxyList-Socks5](https://www.proxy-list.download/SOCKS5)
 
+  - [FreeProxyUpdate-Socks5](https://freeproxyupdate.com/socks5-proxy)
+
+  - [ProxyScrape](https://proxyscrape.com/free-proxy-list) 
+
+  - [SocksProxyList](https://www.socks-proxy.net/)
+
+
+  `sudo nano /etc/proxychains4.conf` , then:
+
+    
     [ProxyList]
     # add proxy here ...
     # meanwile
     # defaults set to "tor"
-    socks4
-    ```
+    socks4  127.0.0.1 9050
+    socks5  127.0.0.1 9050
+    socks5  45.77.136.54 56747
+    socks5  194.163.188.30 16871
+    socks5  195.248.242.15 1237
+    socks5  1.12.55.136 2080
+    ... # add more here
+    
