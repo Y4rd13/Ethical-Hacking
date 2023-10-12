@@ -2,58 +2,63 @@
 
 
 ---
-## Table of Contents
+# 🛡️ Ethical Hacking Course
+
+
+---
+## 📖 Table of Contents
 <details>
 
 - [Ethical Hacking Course](#ethical-hacking-course)
-  - [Table of Contents](#table-of-contents)
-  - [Quick Tweaks to start using Kali Linux](#quick-tweaks-to-start-using-kali-linux)
-    - [Tweak your Kali VM](#tweak-your-kali-vm)
-    - [Kali Repositories sources list](#kali-repositories-sources-list)
-    - [Update, Install DKMS (Dynamic Kernel Module Support)](#update-install-dkms-dynamic-kernel-module-support)
-    - [Install Guest Additions in a VirtualBox VM](#install-guest-additions-in-a-virtualbox-vm)
-  - [Linux Command-Line Interface (CLI)](#linux-command-line-interface-cli)
-    - [Logical Operators](#logical-operators)
-    - [Linux File Permissions](#linux-file-permissions)
-  - [TOR](#tor)
-    - [Install TOR](#install-tor)
-    - [Create a new user](#create-a-new-user)
-  - [Proxychains](#proxychains)
-    - [Tor Proxychains](#tor-proxychains)
-    - [Firefox Proxychains](#firefox-proxychains)
+- [🛡️ Ethical Hacking Course](#️-ethical-hacking-course)
+  - [📖 Table of Contents](#-table-of-contents)
+  - [🚀 Quick Tweaks to start using Kali Linux](#-quick-tweaks-to-start-using-kali-linux)
+    - [🛠️ Tweak your Kali VM](#️-tweak-your-kali-vm)
+    - [📜 Kali Repositories sources list](#-kali-repositories-sources-list)
+    - [⚙️ Update, Install DKMS (Dynamic Kernel Module Support)](#️-update-install-dkms-dynamic-kernel-module-support)
+    - [💿 Install Guest Additions in a VirtualBox VM](#-install-guest-additions-in-a-virtualbox-vm)
+  - [🖥️ Linux Command-Line Interface (CLI)](#️-linux-command-line-interface-cli)
+    - [🔗 Logical Operators](#-logical-operators)
+    - [🔒 Linux File Permissions](#-linux-file-permissions)
+  - [🌐 TOR](#-tor)
+    - [⬇️ Install TOR](#️-install-tor)
+    - [👤 Create a new user](#-create-a-new-user)
+  - [🔗 Proxychains](#-proxychains)
+    - [🌐 Tor Proxychains](#-tor-proxychains)
+    - [🦊 Firefox Proxychains](#-firefox-proxychains)
+    - [⚙️ Import custom proxy to proxychains](#️-import-custom-proxy-to-proxychains)
 
 </details>
 
-## Quick Tweaks to start using Kali Linux
+## 🚀 Quick Tweaks to start using Kali Linux
 
-### Tweak your Kali VM
+### 🛠️ Tweak your Kali VM
 
-```
-...
-[ifupdown]
-managed="true"
-```
+  `sudo nano /etc/NetworkManager/NetworkManager.conf`
 
-    cd /etc/NetworkManager
+    ...
+    [ifupdown]
+    managed="true"
 
-### Kali Repositories sources list
 
-    ```
+### 📜 Kali Repositories sources list
+
+    
     sudo nano /etc/apt/sources.list
-    ```
+    
 
-### Update, Install DKMS (Dynamic Kernel Module Support)
+### ⚙️ Update, Install DKMS (Dynamic Kernel Module Support)
 
 `dkms linux-headers-$(uname -r)` instalará el soporte para módulos dinámicos del kernel y los encabezados del kernel para la versión actual del kernel que estás usando. Esto es esencial si planeas instalar o compilar módulos del kernel personalizados. Por ejemplo, al instalar ciertos drivers o programas que requieren módulos del kernel específicos.
 
-```
+```bash
 sudo apt update && sudo apt upgrade -y
 sudo apt-get update && sudo apt-get install -y dkms linux-headers-$(uname -r)
 sudo apt update && sudo apt upgrade -y
 reboot
 ```
 
-### Install Guest Additions in a VirtualBox VM
+### 💿 Install Guest Additions in a VirtualBox VM
 
     sudo apt-get install virtualbox-guest-additions-iso
 
@@ -66,7 +71,7 @@ reboot
     # or
     sudo apt install build-essential dkms linux-headers-$(uname -r)
 
-## Linux Command-Line Interface (CLI)
+## 🖥️ Linux Command-Line Interface (CLI)
 
 | Command | Description                                        | Explanation                                              | Usage                                   |
 | ------- | -------------------------------------------------- | -------------------------------------------------------- | --------------------------------------- |
@@ -89,7 +94,7 @@ reboot
 
 - `|` (Pipe): Takes the output of one command as input to another : `ls -l \| grep "txt"`
 
-### Logical Operators
+### 🔗 Logical Operators
 | Operador | Descripción                                                                                   | Ejemplo                  |
 | -------- | --------------------------------------------------------------------------------------------- | ------------------------ |
 | `&&`     | Ejecuta el segundo comando si el primero tiene éxito                                          | `command1 && command2`   |
@@ -104,7 +109,7 @@ reboot
 | `<<`     | Redirige la entrada estándar desde un documento de texto                                      | `command << EOF`         |
 
 
-### Linux File Permissions
+### 🔒 Linux File Permissions
 
 | Valor Numérico | Permiso (Letras) | Descripción                                                          |
 | -------------- | ---------------- | -------------------------------------------------------------------- |
@@ -125,20 +130,20 @@ reboot
 | `chmod o-r`                 | Quita permiso de lectura a otros         | `chmod o-r file.txt`                     |
 
 
-## TOR
+## 🌐 TOR
 
-### Install TOR
+### ⬇️ Install TOR
 
     sudo apt install tor -y
 
-### Create a new user
+### 👤 Create a new user
 
 You don't want to compromise your system by running Tor as root. So, create a new user for Tor.
 
     sudo adduser {{test_user}}
 
 
-## Proxychains
+## 🔗 Proxychains
 
 Ability to route your traffic through a proxy server or a chain of proxy servers for anonymity purposes.
 
@@ -159,7 +164,7 @@ If you want to route your traffic using Tor, it is recommended to use `dynamic_c
     socks5  127.0.0.1 9050
 
 
-### Tor Proxychains
+### 🌐 Tor Proxychains
     
     service tor start
     service tor status
@@ -171,10 +176,29 @@ If you want to route your traffic using Tor, it is recommended to use `dynamic_c
     # to stop
     sudo systemctl stop tor
     
-### Firefox Proxychains
+### 🦊 Firefox Proxychains
 
 Now you can use proxychains to route your traffic through Tor.
 
     proxychains firefox www.duckduckgo.com
 
 Check your DNS leaks at [DNS Leak Test](https://www.dnsleaktest.com/)
+
+### ⚙️ Import custom proxy to proxychains
+
+For example, go to:
+  - [ProxyScrape](https://proxyscrape.com/free-proxy-list) and copy a proxy.
+
+  - [Socks Proxy List](https://www.socks-proxy.net/)
+
+    _Note: Netherlands have great privacy policy, so you can use them. Same with Germany._
+
+    ```
+    sudo nano /etc/proxychains4.conf
+
+    [ProxyList]
+    # add proxy here ...
+    # meanwile
+    # defaults set to "tor"
+    socks4
+    ```
