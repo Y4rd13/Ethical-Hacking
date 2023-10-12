@@ -1,3 +1,29 @@
+# Ethical Hacking Course
+
+
+---
+## Table of Contents
+<details>
+
+- [Ethical Hacking Course](#ethical-hacking-course)
+  - [Table of Contents](#table-of-contents)
+  - [Quick Tweaks to start using Kali Linux](#quick-tweaks-to-start-using-kali-linux)
+    - [Tweak your Kali VM](#tweak-your-kali-vm)
+    - [Kali Repositories sources list](#kali-repositories-sources-list)
+    - [Update, Install DKMS (Dynamic Kernel Module Support)](#update-install-dkms-dynamic-kernel-module-support)
+    - [Install Guest Additions in a VirtualBox VM](#install-guest-additions-in-a-virtualbox-vm)
+  - [Linux Command-Line Interface (CLI)](#linux-command-line-interface-cli)
+    - [Logical Operators](#logical-operators)
+    - [Linux File Permissions](#linux-file-permissions)
+  - [TOR](#tor)
+    - [Install TOR](#install-tor)
+    - [Create a new user](#create-a-new-user)
+  - [Proxychains](#proxychains)
+    - [Tor Proxychains](#tor-proxychains)
+    - [Firefox Proxychains](#firefox-proxychains)
+
+</details>
+
 ## Quick Tweaks to start using Kali Linux
 
 ### Tweak your Kali VM
@@ -110,3 +136,45 @@ reboot
 You don't want to compromise your system by running Tor as root. So, create a new user for Tor.
 
     sudo adduser {{test_user}}
+
+
+## Proxychains
+
+Ability to route your traffic through a proxy server or a chain of proxy servers for anonymity purposes.
+
+Always use SOCKS5 proxy, since it supports the UDP protocol and DNS lookups.
+
+If you want to route your traffic using Tor, it is recommended to use `dynamic_chain` mode, due it's instability.
+
+
+     sudo nano /etc/proxychains4.conf
+
+    dynamic_chain
+    ...
+    [ProxyList]
+    # add proxy here ...
+    # meanwile
+    # defaults set to "tor"
+    socks4  127.0.0.1 9050
+    socks5  127.0.0.1 9050
+
+
+### Tor Proxychains
+    
+    service tor start
+    service tor status
+
+    # Or
+    sudo systemctl start tor
+    sudo systemctl status tor
+
+    # to stop
+    sudo systemctl stop tor
+    
+### Firefox Proxychains
+
+Now you can use proxychains to route your traffic through Tor.
+
+    proxychains firefox www.duckduckgo.com
+
+Check your DNS leaks at [DNS Leak Test](https://www.dnsleaktest.com/)
