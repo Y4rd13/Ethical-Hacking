@@ -1,15 +1,9 @@
-# Ethical Hacking Course
-
-
----
 # 🛡️ Ethical Hacking Course
 
 
----
 ## 📖 Table of Contents
 <details>
 
-- [Ethical Hacking Course](#ethical-hacking-course)
 - [🛡️ Ethical Hacking Course](#️-ethical-hacking-course)
   - [📖 Table of Contents](#-table-of-contents)
   - [🚀 Quick Tweaks to start using Kali Linux](#-quick-tweaks-to-start-using-kali-linux)
