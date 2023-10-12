@@ -63,18 +63,20 @@ reboot
 
 - `|` (Pipe): Takes the output of one command as input to another : `ls -l \| grep "txt"`
 
-| Operador | Descripción                                                                                 | Ejemplo                                           |
-| -------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------- | --------- | --- | --------- |
-| `&&`     | Ejecuta el segundo comando si el primero tiene éxito                                        | `command1 && command2`                            |
-| `        |                                                                                             | `                                                 | Ejecuta el segundo comando si el primero falla | `command1 |     | command2` |
-| `!`      | Invierte el resultado (éxito/fallo) del comando                                             | `! command`                                       |
-| `;`      | Ejecuta el segundo comando después del primero, sin importar si el primero tiene éxito o no | `command1 ; command2`                             |
-| `&`      | Ejecuta el comando en segundo plano                                                         | `command &`                                       |
-| `        | `                                                                                           | Toma la salida de un comando como entrada de otro | `command1 \| command2`                         |
-| `>`      | Redirige la salida estándar a un archivo                                                    | `command > file`                                  |
-| `>>`     | Redirige la salida estándar a un archivo, agregando el resultado al final del archivo       | `command >> file`                                 |
-| `<`      | Redirige la entrada estándar desde un archivo                                               | `command < file`                                  |
-| `<<`     | Redirige la entrada estándar desde un documento de texto                                    | `command << EOF`                                  |
+### Logical Operators
+| Operador | Descripción                                                                                   | Ejemplo                  |
+| -------- | --------------------------------------------------------------------------------------------- | ------------------------ |
+| `&&`     | Ejecuta el segundo comando si el primero tiene éxito                                          | `command1 && command2`   |
+| `||`     | Ejecuta el segundo comando si el primero falla                                                | `command1 || command2`   |
+| `!`      | Invierte el resultado (éxito/fallo) del comando                                               | `! command`              |
+| `;`      | Ejecuta el segundo comando después del primero, sin importar si el primero tiene éxito o no  | `command1 ; command2`    |
+| `&`      | Ejecuta el comando en segundo plano                                                           | `command &`              |
+| `|`      | Toma la salida de un comando como entrada de otro                                             | `command1 \| command2`   |
+| `>`      | Redirige la salida estándar a un archivo                                                      | `command > file`         |
+| `>>`     | Redirige la salida estándar a un archivo, agregando el resultado al final del archivo         | `command >> file`        |
+| `<`      | Redirige la entrada estándar desde un archivo                                                 | `command < file`         |
+| `<<`     | Redirige la entrada estándar desde un documento de texto                                      | `command << EOF`         |
+
 
 ### Linux File Permissions
 
