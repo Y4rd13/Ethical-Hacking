@@ -87,9 +87,13 @@ reboot
 | `1`            | `x`              | Ejecutar (Execute): El archivo puede ser ejecutado como un programa. |
 | `0`            | `-`              | Ninguno (None): No se puede realizar ninguna acción en el archivo.   |
 
-| Combinaciones Ejemplo | Descripción                              |
-| --------------------- | ---------------------------------------- |
-| `chmod 755`           | Propietario: rwx, Grupo: r-x, Otros: r-x |
-| `chmod 644`           | Propietario: rw-, Grupo: r--, Otros: r-- |
-| `chmod 700`           | Propietario: rwx, Grupo: ---, Otros: --- |
-| `chmod 777`           | Propietario: rwx, Grupo: rwx, Otros: rwx |
+| Combinaciones/Modificadores | Descripción                              | Ejemplo de Uso                            |
+| --------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `chmod 755`                 | Propietario: rwx, Grupo: r-x, Otros: r-x | `chmod 755 file.txt`                     |
+| `chmod 644`                 | Propietario: rw-, Grupo: r--, Otros: r-- | `chmod 644 file.txt`                     |
+| `chmod 700`                 | Propietario: rwx, Grupo: ---, Otros: --- | `chmod 700 file.txt`                     |
+| `chmod 777`                 | Propietario: rwx, Grupo: rwx, Otros: rwx | `chmod 777 file.txt`                     |
+| `chmod +x`                  | Añade permiso de ejecución a todos       | `chmod +x script.sh`                     |
+| `chmod u+x`                 | Añade permiso de ejecución al propietario| `chmod u+x script.sh`                    |
+| `chmod g-w`                 | Quita permiso de escritura al grupo      | `chmod g-w file.txt`                     |
+| `chmod o-r`                 | Quita permiso de lectura a otros         | `chmod o-r file.txt`                     |
