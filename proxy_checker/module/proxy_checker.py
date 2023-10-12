@@ -5,9 +5,9 @@ from tqdm import tqdm
 import argparse
 
 class ProxyChecker:
-    def __init__(self, csv_path, timeout=5, test_url="https://www.duckduckgo.com"):
+    def __init__(self, csv_path, delimiter=",", timeout=5, test_url="https://www.duckduckgo.com"):
         self.csv_path = csv_path
-        self.df = pd.read_csv(csv_path)
+        self.df = pd.read_csv(csv_path, delimiter=delimiter)
         self.timeout = timeout
         self.test_url = test_url
     
@@ -47,6 +47,8 @@ class ProxyChecker:
 def main_args():
     parser = argparse.ArgumentParser(description="A tool to check and analyze proxy status from a CSV file.")
     
+    parser.add_argument("--file", "-f", type=str, default="./data/proxies-advanced.csv", help="Path to the CSV file containing the proxies. Default is ./data/proxies-advanced.csv.")
+    parser.add_argument("--delimiter", "-d", type=str, default=",", help="Delimiter used in the CSV file. Default is comma.")
     parser.add_argument("--display", action="store_true", help="Display the CSV content.")
     parser.add_argument("--analyze", action="store_true", help="Analyze the proxies to check their status.")
     parser.add_argument("--save", action="store_true", help="Save the analyzed CSV. Use it with --analyze.")
@@ -55,7 +57,7 @@ def main_args():
 
     args = parser.parse_args()
 
-    checker = ProxyChecker("proxies-advanced.csv", timeout=args.timeout, test_url=args.url)
+    checker = ProxyChecker(args.file, delimiter=args.delimiter, timeout=args.timeout, test_url=args.url)
 
     if args.display:
         print(checker.df)
@@ -64,4 +66,7 @@ def main_args():
         checker.analyze_proxies()
 
     if args.save and args.analyze:
-        checker.save_to_csv("proxies-advanced-status.csv")
+        checker.save_to_csv("./data/proxies-advanced-status.csv")
+
+if __name__ == "__main__":
+    main_args()
