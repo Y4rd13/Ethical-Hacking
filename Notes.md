@@ -1,4 +1,6 @@
-## Tweak your Kali VM
+## Quick Tweaks to start using Kali Linux
+
+### Tweak your Kali VM
 
 ```
 ...
@@ -6,16 +8,17 @@
 managed="true"
 ```
 
-`cd /etc/NetworkManager`
+    cd /etc/NetworkManager
 
-## Kali Repositories sources list
+### Kali Repositories sources list
 
-`sudo nano /etc/apt/sources.list`
+    ```
+    sudo nano /etc/apt/sources.list
+    ```
 
+### Update, Install DKMS (Dynamic Kernel Module Support)
 
-## Update, Install DKMS (Dynamic Kernel Module Support) 
-
-dkms linux-headers-$(uname -r) instalará el soporte para módulos dinámicos del kernel y los encabezados del kernel para la versión actual del kernel que estás usando. Esto es esencial si planeas instalar o compilar módulos del kernel personalizados. Por ejemplo, al instalar ciertos drivers o programas que requieren módulos del kernel específicos.
+`dkms linux-headers-$(uname -r)` instalará el soporte para módulos dinámicos del kernel y los encabezados del kernel para la versión actual del kernel que estás usando. Esto es esencial si planeas instalar o compilar módulos del kernel personalizados. Por ejemplo, al instalar ciertos drivers o programas que requieren módulos del kernel específicos.
 
 ```
 sudo apt update && sudo apt upgrade -y
