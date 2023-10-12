@@ -62,3 +62,32 @@ reboot
 | `help`  | Display help for a built-in command                | Provides help for shell built-in commands                | `help cd`                               |
 
 - `|` (Pipe): Takes the output of one command as input to another : `ls -l \| grep "txt"`
+
+| Operador | Descripción                                                                                 | Ejemplo                                           |
+| -------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------- | --------- | --- | --------- |
+| `&&`     | Ejecuta el segundo comando si el primero tiene éxito                                        | `command1 && command2`                            |
+| `        |                                                                                             | `                                                 | Ejecuta el segundo comando si el primero falla | `command1 |     | command2` |
+| `!`      | Invierte el resultado (éxito/fallo) del comando                                             | `! command`                                       |
+| `;`      | Ejecuta el segundo comando después del primero, sin importar si el primero tiene éxito o no | `command1 ; command2`                             |
+| `&`      | Ejecuta el comando en segundo plano                                                         | `command &`                                       |
+| `        | `                                                                                           | Toma la salida de un comando como entrada de otro | `command1 \| command2`                         |
+| `>`      | Redirige la salida estándar a un archivo                                                    | `command > file`                                  |
+| `>>`     | Redirige la salida estándar a un archivo, agregando el resultado al final del archivo       | `command >> file`                                 |
+| `<`      | Redirige la entrada estándar desde un archivo                                               | `command < file`                                  |
+| `<<`     | Redirige la entrada estándar desde un documento de texto                                    | `command << EOF`                                  |
+
+### Linux File Permissions
+
+| Valor Numérico | Permiso (Letras) | Descripción                                                          |
+| -------------- | ---------------- | -------------------------------------------------------------------- |
+| `4`            | `r`              | Leer (Read): El archivo puede ser leído.                             |
+| `2`            | `w`              | Escribir (Write): Se pueden realizar cambios en el archivo.          |
+| `1`            | `x`              | Ejecutar (Execute): El archivo puede ser ejecutado como un programa. |
+| `0`            | `-`              | Ninguno (None): No se puede realizar ninguna acción en el archivo.   |
+
+| Combinaciones Ejemplo | Descripción                              |
+| --------------------- | ---------------------------------------- |
+| `chmod 755`           | Propietario: rwx, Grupo: r-x, Otros: r-x |
+| `chmod 644`           | Propietario: rw-, Grupo: r--, Otros: r-- |
+| `chmod 700`           | Propietario: rwx, Grupo: ---, Otros: --- |
+| `chmod 777`           | Propietario: rwx, Grupo: rwx, Otros: rwx |
