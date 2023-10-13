@@ -238,6 +238,8 @@ For example, go to (and copy a proxy):
 
 ### 📹 WebRTC
 
+Ve a **Firefox** y escribe `about:config` en la barra de direcciones. Luego, busca `media.peerconnection.enabled` y deshabilítalo. Finalmente, **reinicia Firefox**.
+
 El ajuste `media.peerconnection.enabled` en `about:config` de **Firefox** está relacionado con **WebRTC** (Web Real-Time Communication). WebRTC es una tecnología que permite la comunicación en tiempo real directamente en el navegador sin necesidad de plugins o aplicaciones externas. Es ampliamente utilizado para aplicaciones de videoconferencia, chats en vivo, transferencia de archivos y otras aplicaciones interactivas en tiempo real.
 
 
