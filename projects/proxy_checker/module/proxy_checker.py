@@ -16,7 +16,6 @@ class ProxyChecker:
             protocol: f"{protocol}://{ip}:{port}"
         }
         try:
-            # Intentamos obtener la página de inicio de Google solo para comprobar la conectividad.
             response = requests.get(self.test_url, proxies=proxies, timeout=self.timeout)
             return response.status_code == 200
         except:
@@ -26,9 +25,7 @@ class ProxyChecker:
         status_list = []
         updated_at_list = []
 
-        # Usar tqdm para mostrar una barra de progreso
         for index, row in tqdm(self.df.iterrows(), total=self.df.shape[0], desc="Checking proxies"):
-            # Tomamos el primer protocolo disponible para la prueba.
             protocol = row['protocols'].split(",")[0].split("(")[1].split(",")[0].split("=")[1]
             ip = row['ip']
             port = row['port']
