@@ -1,5 +1,6 @@
 from .proxy_checker import ProxyChecker
 from .dns_checker import DNSInfo, set_ipinfo_token
+import json
 from dotenv import load_dotenv
 import argparse
 load_dotenv()
@@ -25,11 +26,11 @@ def main_arguments():
 
 def proxy_checker_args(parser):
     # File and basic options
-    parser.add_argument("--file", "-f", type=str, default="./data/proxies-advanced.csv", help="Path to the CSV file containing the proxies. Default: './data/proxies-advanced.csv'.")
+    parser.add_argument("--file", "-f", type=str, default="./data/static/proxies-advanced.csv", help="Path to the CSV file containing the proxies. Default: './data/static/proxies-advanced.csv'.")
     parser.add_argument("--delimiter", "-d", type=str, default=",", help="Delimiter used in the CSV file. Default: ','.")
     parser.add_argument("--timeout", "-t", type=int, default=5, help="Timeout for testing each proxy. Default: 5 seconds.")
     parser.add_argument("--url", "-u", type=str, default="https://www.duckduckgo.com", help="URL to test the proxy against. Default: 'https://www.duckduckgo.com'.")
-    parser.add_argument("--test", action="store_true", help="Test using './data/proxies-advanced-test.csv'.")
+    parser.add_argument("--test", action="store_true", help="Test using './data/static/proxies-advanced-test.csv'.")
 
     # Analysis options
     parser.add_argument("--analyze", action="store_true", help="Analyze the proxies to check their status.")
@@ -46,6 +47,7 @@ def proxy_checker_args(parser):
 def dns_checker_args(parser):
     parser.add_argument("--domain", "-d", type=str, default=None, help="Domain or IP address to retrieve DNS and location info. Default: None, which retrieves info for the current machine.")
     parser.add_argument("--token", "-t", type=str, default=None, help="IPINFO_TOKEN for accessing ipinfo.io. This will create/update the .env file.")
+    parser.add_argument("--save", action="store_true", help="Save the DNS and location info as a JSON file.")
 
 def run_proxy(args):
     # Main logic for proxy checker
@@ -64,7 +66,7 @@ def run_proxy(args):
             checker.analyze_proxies()
 
     if args.save and args.analyze:
-        output_path = "./data/proxy-checker-output"
+        output_path = "./data/output/proxy-checker-output"
         if args.format == "csv":
             output_path += ".csv"
         elif args.format == "json":
@@ -78,22 +80,38 @@ def run_dns(args):
     # Main logic for DNS checker
     if args.token:
         set_ipinfo_token(args.token)
-        load_dotenv()  # Reload environment variable
-
-    dns_info = DNSInfo(args.domain if args.domain else "google.com")
-
-    if args.domain:
-        print("DNS and Location Info for:", args.domain)
-        print("-" * 50)
-        print("IP Address:", dns_info.get_ip_address())
-        print("FQDN:", dns_info.get_fqdn())
-        print("Alias and IPs:", dns_info.get_alias_and_ips())
-        print("Name Servers:", dns_info.get_name_servers())
-        print("Location Info:", dns_info.get_location_info())
-        print("-" * 50)
+        print('IPINFO_TOKEN set successfully.')
+        
     else:
-        print("DNS and Location Info for own machine:")
-        print("-" * 50)
-        print("Own DNS Info:", dns_info.get_own_dns_info())
-        print("Location Info:", dns_info.get_location_info())
-        print("-" * 50)
+        dns_info = DNSInfo(args.domain if args.domain else "duckduckgo.com")
+        if args.domain:
+            output_data = {
+                "domain": args.domain,
+                "info":{
+                    "ip_address": dns_info.get_ip_address(),
+                    "fqdn": dns_info.get_fqdn(),
+                    "alias_and_ips": dns_info.get_alias_and_ips(),
+                    "name_servers": dns_info.get_name_servers(),
+                    "location": dns_info.get_location_info()
+                }
+            }
+        else:
+            output_data = {
+                "domain": args.domain,
+                "info":{
+                    "own_dns": dns_info.get_own_dns_info(),
+                    "location": dns_info.get_location_info()
+                }
+            }
+
+        # Display the information
+        for key, value in output_data.items():
+            print(f"{key}: {value}")
+            print("-" * 50)
+
+        # Save to JSON if --save is set
+        if args.save:
+            output_path = f"./data/output/dns_info_{args.domain if args.domain else 'own'}.json"
+            with open(output_path, 'w') as json_file:
+                json.dump(output_data, json_file, indent=4)
+            print(f"Saved DNS and Location Info to {output_path}")

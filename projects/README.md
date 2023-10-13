@@ -37,11 +37,11 @@ python main.py proxy --analyze -p -mw 50 --save --keep_online --test --protocol 
 ```
 
 Arguments:
-- `--file, -f`: Path to the CSV file containing the proxies. Default: `./data/proxies-advanced.csv`
+- `--file, -f`: Path to the CSV file containing the proxies. Default: `./data/static/proxies-advanced.csv`
 - `--delimiter, -d`: Delimiter used in the CSV file. Default: `,`
 - `--timeout, -t`: Timeout for testing each proxy. Default: 5 seconds.
 - `--url, -u`: URL to test the proxy against. Default: `https://www.duckduckgo.com`
-- `--test`: Test using `./data/proxies-advanced-test.csv`
+- `--test`: Test using `./data/static/proxies-advanced-test.csv`
 - `--analyze`: Analyze the proxies to check their status.
 - `--parallel, -p`: Use parallel requests to analyze proxies.
 - `--max_workers, -mw`: Number of worker threads for parallel requests. Default: 10.
@@ -53,21 +53,35 @@ Arguments:
 
 ### DNS Checker
 
-To retrieve DNS and location information:
+
+1. Set the token for ipinfo.io:
+```bash
+pthon main.py dns --token "{YOUR_TOKEN}"
+``` 
+
+2. To retrieve DNS and location information:
 
 ```bash
-python main.py dns --domain "google.com" --token "abcd123456"
+python main.py dns --domain "duckduckgo.com"
+```
+
+3. To retrive your own DNS and location information:
+
+```bash
+python main.py dns
+```
+
+4. To retrieve DNS and location information and save it to a file as json:
+
+```bash
+python main.py dns --domain "duckduckgo.com" --save
 ```
 
 Arguments:
 - `--domain, -d`: Domain or IP address to retrieve DNS and location info. Default: None (which retrieves info for the current machine).
 - `--token, -t`: IPINFO_TOKEN for accessing ipinfo.io. This will create/update the .env file.
+- `--save`: Save the DNS and location info as a JSON file.
 
 ## Note
 
 Make sure to have the required environment variables set up, especially if you're using third-party services like ipinfo.io.
-```
-
-This `README.md` serves as a basic guide for anyone looking to use your tool. Adjustments can be made as needed based on the final functionality and structure of your project.
-
-

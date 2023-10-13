@@ -3,10 +3,9 @@ import ipinfo
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv("projects/checkers/modules/.env")
 
 class DNSInfo:
-
     def __init__(self, domain=None):
         self.domain = domain
         self.ipinfo_token = os.environ.get('IPINFO_TOKEN')
