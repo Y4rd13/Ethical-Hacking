@@ -249,12 +249,12 @@ El ajuste `media.peerconnection.enabled` tiene los siguientes efectos:
 1. **Cuando está habilitado (valor `true`)**:
     - WebRTC está activo y funcionando en Firefox.
     - Las aplicaciones web pueden establecer conexiones P2P (peer-to-peer) para la transmisión de datos, video y audio.
-    - Un posible riesgo asociado con tener esto habilitado es que sitios web maliciosos pueden usar WebRTC para detectar tu dirección IP local y pública, incluso si estás detrás de un VPN. Este riesgo es a menudo referido como una "fuga WebRTC".
+    - Un posible riesgo asociado con tener esto habilitado es que sitios web maliciosos pueden usar WebRTC para detectar tu dirección IP local y pública, incluso si estás detrás de un VPN. Este riesgo es a menudo referido como una "fuga WebRTC" (**WebRTC Leak**).
 
 2. **Cuando está deshabilitado (valor `false`)**:
     - WebRTC está desactivado en Firefox.
     - Las aplicaciones web no pueden usar WebRTC para establecer conexiones P2P.
-    - El riesgo de "fuga WebRTC" se mitiga, ya que WebRTC está desactivado y no puede ser utilizado para detectar las direcciones IP.
+    - El riesgo de "fuga WebRTC" (**WebRTC Leak**) se mitiga, ya que WebRTC está desactivado y no puede ser utilizado para detectar las direcciones IP.
 
 #### ¿Qué sucede si desactivo WebRTC?
 Si `media.peerconnection.enabled` está configurado en `false`, algunas de las funcionalidades o acciones que no podrías realizar o que se verían afectadas incluyen:
