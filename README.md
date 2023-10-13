@@ -25,9 +25,10 @@
     - [🌐 OpenVPN](#-openvpn)
     - [🌐 NordVPN](#-nordvpn)
     - [📹 WebRTC](#-webrtc)
-      - [Ajuste `media.peerconnection.enabled`](#ajuste-mediapeerconnectionenabled)
-      - [¿Qué sucede si desactivo WebRTC?](#qué-sucede-si-desactivo-webrtc)
-      - [¿Debería desactivar WebRTC?](#debería-desactivar-webrtc)
+      - [1. Ajuste `media.peerconnection.enabled`](#1-ajuste-mediapeerconnectionenabled)
+      - [2. Efectos de habilitar/deshabilitar WebRTC](#2-efectos-de-habilitardeshabilitar-webrtc)
+      - [3. ¿Qué sucede si desactivo WebRTC?](#3-qué-sucede-si-desactivo-webrtc)
+      - [4. ¿Debería desactivar WebRTC?](#4-debería-desactivar-webrtc)
 
 </details>
 
@@ -238,12 +239,17 @@ For example, go to (and copy a proxy):
 
 ### 📹 WebRTC
 
+**Check your WebRTC leaks at [BrowserLeaks](https://browserleaks.com/webrtc)**
+
+#### 1. Ajuste `media.peerconnection.enabled`
+
 Ve a **Firefox** y escribe `about:config` en la barra de direcciones. Luego, busca `media.peerconnection.enabled` y deshabilítalo. Finalmente, **reinicia Firefox**.
 
 El ajuste `media.peerconnection.enabled` en `about:config` de **Firefox** está relacionado con **WebRTC** (Web Real-Time Communication). WebRTC es una tecnología que permite la comunicación en tiempo real directamente en el navegador sin necesidad de plugins o aplicaciones externas. Es ampliamente utilizado para aplicaciones de videoconferencia, chats en vivo, transferencia de archivos y otras aplicaciones interactivas en tiempo real.
 
 
-#### Ajuste `media.peerconnection.enabled`
+#### 2. Efectos de habilitar/deshabilitar WebRTC
+
 El ajuste `media.peerconnection.enabled` tiene los siguientes efectos:
 
 1. **Cuando está habilitado (valor `true`)**:
@@ -256,24 +262,24 @@ El ajuste `media.peerconnection.enabled` tiene los siguientes efectos:
     - Las aplicaciones web no pueden usar WebRTC para establecer conexiones P2P.
     - El riesgo de "fuga WebRTC" (**WebRTC Leak**) se mitiga, ya que WebRTC está desactivado y no puede ser utilizado para detectar las direcciones IP.
 
-#### ¿Qué sucede si desactivo WebRTC?
+#### 3. ¿Qué sucede si desactivo WebRTC?
 Si `media.peerconnection.enabled` está configurado en `false`, algunas de las funcionalidades o acciones que no podrías realizar o que se verían afectadas incluyen:
 
-1. **Videoconferencias:** Muchos servicios de videoconferencia en línea dependen de WebRTC para funcionar directamente en el navegador. Si desactivas WebRTC, podrías experimentar problemas o no poder unirte a llamadas en plataformas como Jitsi, Google Meet, entre otros.
+- **Videoconferencias:** Muchos servicios de videoconferencia en línea dependen de WebRTC para funcionar directamente en el navegador. Si desactivas WebRTC, podrías experimentar problemas o no poder unirte a llamadas en plataformas como Jitsi, Google Meet, entre otros.
 
-2. **Chats en vivo con audio o video:** Las plataformas de chat que ofrecen opciones de llamadas de voz o video en tiempo real, como Discord Web o Facebook Messenger, podrían no funcionar correctamente.
+- **Chats en vivo con audio o video:** Las plataformas de chat que ofrecen opciones de llamadas de voz o video en tiempo real, como Discord Web o Facebook Messenger, podrían no funcionar correctamente.
 
-3. **Transferencia de archivos P2P:** Algunos sitios web y aplicaciones utilizan WebRTC para permitir la transferencia de archivos directamente entre usuarios sin pasar por un servidor central. Si desactivas WebRTC, estas transferencias podrían no ser posibles.
+- **Transferencia de archivos P2P:** Algunos sitios web y aplicaciones utilizan WebRTC para permitir la transferencia de archivos directamente entre usuarios sin pasar por un servidor central. Si desactivas WebRTC, estas transferencias podrían no ser posibles.
 
-4. **Juegos en línea con funciones de chat de voz:** Algunos juegos en línea que se juegan directamente en el navegador y que ofrecen chat de voz en tiempo real podrían no funcionar correctamente.
+- **Juegos en línea con funciones de chat de voz:** Algunos juegos en línea que se juegan directamente en el navegador y que ofrecen chat de voz en tiempo real podrían no funcionar correctamente.
 
-5. **Aplicaciones de streaming en vivo:** Plataformas que permiten el streaming en vivo desde el navegador podrían depender de WebRTC para capturar y transmitir audio y video.
+- **Aplicaciones de streaming en vivo:** Plataformas que permiten el streaming en vivo desde el navegador podrían depender de WebRTC para capturar y transmitir audio y video.
 
-6. **Aplicaciones de realidad aumentada o virtual:** Algunas aplicaciones web de AR o VR que requieren transmisión en tiempo real de datos podrían no funcionar sin WebRTC.
+- **Aplicaciones de realidad aumentada o virtual:** Algunas aplicaciones web de AR o VR que requieren transmisión en tiempo real de datos podrían no funcionar sin WebRTC.
 
-7. **Detección automática de dispositivos:** WebRTC puede ayudar a las aplicaciones web a detectar y acceder a cámaras y micrófonos disponibles en tu dispositivo. Si lo desactivas, algunas aplicaciones podrían no ser capaces de acceder a estos dispositivos correctamente.
+- **Detección automática de dispositivos:** WebRTC puede ayudar a las aplicaciones web a detectar y acceder a cámaras y micrófonos disponibles en tu dispositivo. Si lo desactivas, algunas aplicaciones podrían no ser capaces de acceder a estos dispositivos correctamente.
 
-#### ¿Debería desactivar WebRTC?
+#### 4. ¿Debería desactivar WebRTC?
 Si valoras tu privacidad y quieres asegurarte de que tu dirección IP no sea detectada por sitios web a través de WebRTC, puedes considerar desactivar este ajuste. Sin embargo, ten en cuenta que desactivar WebRTC puede afectar la funcionalidad de aplicaciones y sitios web que dependen de él.
 
 En resumen, desactivar WebRTC puede mejorar la privacidad y seguridad, pero también puede limitar o afectar la funcionalidad de muchos servicios y aplicaciones web modernas que dependen de esta tecnología para la comunicación en tiempo real. Es importante sopesar los pros y contras antes de decidir desactivarlo.
