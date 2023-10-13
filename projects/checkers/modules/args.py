@@ -1,9 +1,29 @@
 from .proxy_checker import ProxyChecker
+from .dns_checker import DNSInfo, set_ipinfo_token
+from dotenv import load_dotenv
 import argparse
+load_dotenv()
 
-def proxy_checker_args():
-    parser = argparse.ArgumentParser(description="A tool to check and analyze proxy status from a CSV file.")
-    
+def main_arguments():
+    parser = argparse.ArgumentParser(description="Checkers for Proxies status and DNS/IP information.")
+    subparsers = parser.add_subparsers(dest="mode")
+
+    # Proxy subparser
+    proxy_parser = subparsers.add_parser("proxy", help="Run proxy checker.")
+    proxy_checker_args(proxy_parser)
+
+    # DNS subparser
+    dns_parser = subparsers.add_parser("dns", help="Run DNS checker.")
+    dns_checker_args(dns_parser)
+
+    args = parser.parse_args()
+
+    if args.mode == "proxy":
+        run_proxy(args)
+    elif args.mode == "dns":
+        run_dns(args)
+
+def proxy_checker_args(parser):
     # File and basic options
     parser.add_argument("--file", "-f", type=str, default="./data/proxies-advanced.csv", help="Path to the CSV file containing the proxies. Default: './data/proxies-advanced.csv'.")
     parser.add_argument("--delimiter", "-d", type=str, default=",", help="Delimiter used in the CSV file. Default: ','.")
@@ -23,16 +43,13 @@ def proxy_checker_args():
     parser.add_argument("--keep_online", action="store_true", default=True, help="Keep only the proxies with status == True in the saved CSV. Use it with --save and --analyze. Default: True.")
     parser.add_argument("--protocol", "-proto", type=str, choices=["http", "https", "socks4", "socks5"], help="Filter proxies by protocol type. Options: 'http', 'https', 'socks4', or 'socks5'. If not set, all protocols are used.")
 
+def dns_checker_args(parser):
+    parser.add_argument("--domain", "-d", type=str, default=None, help="Domain or IP address to retrieve DNS and location info. Default: None, which retrieves info for the current machine.")
+    parser.add_argument("--token", "-t", type=str, default=None, help="IPINFO_TOKEN for accessing ipinfo.io. This will create/update the .env file.")
 
-    # Parsear arguments
-    args = parser.parse_args()
-
-    # Main
-    if args.test:
-        args.file = "./data/proxies-advanced-test.csv"
-
+def run_proxy(args):
+    # Main logic for proxy checker
     checker = ProxyChecker(args.file, delimiter=args.delimiter, timeout=args.timeout, test_url=args.url)
-
 
     if args.display:
         print("-" * 50)
@@ -49,11 +66,34 @@ def proxy_checker_args():
     if args.save and args.analyze:
         output_path = "./data/proxy-checker-output"
         if args.format == "csv":
-            output_path = f"{output_path}.csv"
+            output_path += ".csv"
         elif args.format == "json":
-            output_path = f"{output_path}.json"
-
+            output_path += ".json"
         elif args.format == "txt":
-            output_path = f"{output_path}.txt"
+            output_path += ".txt"
 
         checker.save_output(output_path, keep_online=args.keep_online, filter_protocol=args.protocol, file_format=args.format)
+
+def run_dns(args):
+    # Main logic for DNS checker
+    if args.token:
+        set_ipinfo_token(args.token)
+        load_dotenv()  # Reload environment variable
+
+    dns_info = DNSInfo(args.domain if args.domain else "google.com")
+
+    if args.domain:
+        print("DNS and Location Info for:", args.domain)
+        print("-" * 50)
+        print("IP Address:", dns_info.get_ip_address())
+        print("FQDN:", dns_info.get_fqdn())
+        print("Alias and IPs:", dns_info.get_alias_and_ips())
+        print("Name Servers:", dns_info.get_name_servers())
+        print("Location Info:", dns_info.get_location_info())
+        print("-" * 50)
+    else:
+        print("DNS and Location Info for own machine:")
+        print("-" * 50)
+        print("Own DNS Info:", dns_info.get_own_dns_info())
+        print("Location Info:", dns_info.get_location_info())
+        print("-" * 50)

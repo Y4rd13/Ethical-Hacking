@@ -1,7 +1,10 @@
-from modules.args import proxy_checker_args
+from modules.args import main_arguments
 
 def main():
-    proxy_checker_args()
+    try:
+        main_arguments()
+    except Exception as err:
+        raise Exception(f"E: {err}")
 
 if __name__ == "__main__":
     main()

@@ -1,4 +1,3 @@
-import argparse
 import socket
 import ipinfo
 import os
@@ -11,6 +10,8 @@ class DNSInfo:
     def __init__(self, domain=None):
         self.domain = domain
         self.ipinfo_token = os.environ.get('IPINFO_TOKEN')
+        if self.ipinfo_token is None:
+            raise ValueError("IPINFO_TOKEN is not set. Please provide it using the --token argument.")
         self.ipinfo_handler = ipinfo.getHandler(self.ipinfo_token)
 
     def get_ip_address(self):
@@ -64,6 +65,11 @@ class DNSInfo:
     def get_location_info(self, ip=None):
         """Obtiene la información de ubicación de la dirección IP proporcionada usando ipinfo.io."""
         return self.ipinfo_handler.getDetails(ip_address=ip).details
+
+def set_ipinfo_token(token):
+    """Sets the IPINFO_TOKEN in a .env file."""
+    with open(".env", "w") as f:
+        f.write(f"IPINFO_TOKEN = \"{token}\"")
 
 if __name__ == "__main__":
     domain_info = DNSInfo("google.com")
