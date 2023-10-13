@@ -51,6 +51,10 @@ def dns_checker_args(parser):
 
 def run_proxy(args):
     # Main logic for proxy checker
+
+    if args.test:
+        args.file = "./data/static/proxies-advanced-test.csv"
+
     checker = ProxyChecker(args.file, delimiter=args.delimiter, timeout=args.timeout, test_url=args.url)
 
     if args.display:
@@ -73,6 +77,7 @@ def run_proxy(args):
             output_path += ".json"
         elif args.format == "txt":
             output_path += ".txt"
+
 
         checker.save_output(output_path, keep_online=args.keep_online, filter_protocol=args.protocol, file_format=args.format)
 
