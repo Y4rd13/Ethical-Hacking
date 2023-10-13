@@ -21,8 +21,13 @@
     - [🌐 Tor Proxychains](#-tor-proxychains)
     - [🦊 Firefox Proxychains](#-firefox-proxychains)
     - [⚙️ Import custom proxy to proxychains](#️-import-custom-proxy-to-proxychains)
+  - [🛡️ VPN](#️-vpn)
+    - [🌐 OpenVPN](#-openvpn)
+    - [🌐 NordVPN](#-nordvpn)
+    - [📹 WebRTC](#-webrtc)
 
 </details>
+
 
 ## 🚀 Quick Tweaks to start using Kali Linux
 
@@ -211,3 +216,37 @@ For example, go to (and copy a proxy):
     socks5  1.12.55.136 2080
     ... # add more here
     
+
+## 🛡️ VPN
+
+### 🌐 OpenVPN
+
+    sudo apt install openvpn -y
+    sudo openvpn --config {{file.ovpn}}
+
+
+### 🌐 NordVPN
+
+[NordVPN Linux installation](https://support.nordvpn.com/Connectivity/Linux/1325531132/Installing-and-using-NordVPN-on-Debian-Ubuntu-Raspberry-Pi-Elementary-OS-and-Linux-Mint.htm)
+
+    nordvpn login
+    nordvpn connect {country/group}
+
+
+### 📹 WebRTC
+
+El ajuste `media.peerconnection.enabled` en `about:config` de Firefox está relacionado con WebRTC (Web Real-Time Communication). WebRTC es una tecnología que permite la comunicación en tiempo real directamente en el navegador sin necesidad de plugins o aplicaciones externas. Es ampliamente utilizado para aplicaciones de videoconferencia, chats en vivo, transferencia de archivos y otras aplicaciones interactivas en tiempo real.
+
+El ajuste `media.peerconnection.enabled` tiene los siguientes efectos:
+
+1. **Cuando está habilitado (valor `true`)**:
+    - WebRTC está activo y funcionando en **Firefox**.
+    - Las aplicaciones web pueden establecer conexiones P2P (peer-to-peer) para la transmisión de datos, video y audio.
+    - Un posible riesgo asociado con tener esto habilitado es que sitios web maliciosos pueden usar WebRTC para detectar tu dirección IP local y pública, incluso si estás detrás de un VPN. Este riesgo es a menudo referido como una "fuga WebRTC".
+
+2. **Cuando está deshabilitado (valor `false`)**:
+    - WebRTC está desactivado en Firefox.
+    - Las aplicaciones web no pueden usar WebRTC para establecer conexiones P2P.
+    - El riesgo de "fuga WebRTC" se mitiga, ya que WebRTC está desactivado y no puede ser utilizado para detectar las direcciones IP.
+
+Si valoras tu privacidad y quieres asegurarte de que tu dirección IP no sea detectada por sitios web a través de WebRTC, puedes considerar desactivar este ajuste. Sin embargo, ten en cuenta que desactivar WebRTC puede afectar la funcionalidad de aplicaciones y sitios web que dependen de él.
