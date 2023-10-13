@@ -235,12 +235,12 @@ For example, go to (and copy a proxy):
 
 ### 📹 WebRTC
 
-El ajuste `media.peerconnection.enabled` en `about:config` de Firefox está relacionado con WebRTC (Web Real-Time Communication). WebRTC es una tecnología que permite la comunicación en tiempo real directamente en el navegador sin necesidad de plugins o aplicaciones externas. Es ampliamente utilizado para aplicaciones de videoconferencia, chats en vivo, transferencia de archivos y otras aplicaciones interactivas en tiempo real.
+El ajuste `media.peerconnection.enabled` en `about:config` de **Firefox** está relacionado con **WebRTC** (Web Real-Time Communication). WebRTC es una tecnología que permite la comunicación en tiempo real directamente en el navegador sin necesidad de plugins o aplicaciones externas. Es ampliamente utilizado para aplicaciones de videoconferencia, chats en vivo, transferencia de archivos y otras aplicaciones interactivas en tiempo real.
 
 El ajuste `media.peerconnection.enabled` tiene los siguientes efectos:
 
 1. **Cuando está habilitado (valor `true`)**:
-    - WebRTC está activo y funcionando en **Firefox**.
+    - WebRTC está activo y funcionando en Firefox.
     - Las aplicaciones web pueden establecer conexiones P2P (peer-to-peer) para la transmisión de datos, video y audio.
     - Un posible riesgo asociado con tener esto habilitado es que sitios web maliciosos pueden usar WebRTC para detectar tu dirección IP local y pública, incluso si estás detrás de un VPN. Este riesgo es a menudo referido como una "fuga WebRTC".
 
