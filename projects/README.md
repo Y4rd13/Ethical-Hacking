@@ -1,3 +1,20 @@
+# Ethical Hacking Projects
+
+## 📖 Table of Contents
+<details>
+    <summary>Click to expand</summary>
+
+- [Ethical Hacking Projects](#ethical-hacking-projects)
+  - [📖 Table of Contents](#-table-of-contents)
+- [Checkers for Proxies status and DNS/IP information.](#checkers-for-proxies-status-and-dnsip-information)
+  - [Requirements](#requirements)
+  - [Usage](#usage)
+    - [Proxy Checker](#proxy-checker)
+    - [DNS Checker](#dns-checker)
+  - [Note](#note)
+
+</details>
+
 # Checkers for Proxies status and DNS/IP information.
 
 This tool provides functionality to analyze proxies and retrieve DNS/IP information.
@@ -52,3 +69,5 @@ Make sure to have the required environment variables set up, especially if you'r
 ```
 
 This `README.md` serves as a basic guide for anyone looking to use your tool. Adjustments can be made as needed based on the final functionality and structure of your project.
+
+
