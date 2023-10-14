@@ -261,6 +261,14 @@ For example, go to (and copy a proxy):
     ```sh
     sudo apt-get install openvpn
     ```
+  
+3. Download the OpenVPN configuration files with the command:
+
+    ```sh
+    sudo wget https://downloads.nordcdn.com/configs/archives/servers/ovpn.zip
+    ```
+
+4. ... Follow next steps in the **official guide:** [Connect to NordVPN with OpenVPN using Linux Terminal](https://support.nordvpn.com/Connectivity/Linux/1047409422/Connect-to-NordVPN-using-Linux-Terminal.htm).
 
 ### 📹 WebRTC
 
