@@ -24,6 +24,7 @@
   - [🛡️ VPN](#️-vpn)
     - [🌐 OpenVPN](#-openvpn)
     - [🌐 NordVPN](#-nordvpn)
+    - [🌐 NordVPN + OpenVPN](#-nordvpn--openvpn)
     - [📹 WebRTC](#-webrtc)
       - [1. Ajuste `media.peerconnection.enabled`](#1-ajuste-mediapeerconnectionenabled)
       - [2. Efectos de habilitar/deshabilitar WebRTC](#2-efectos-de-habilitardeshabilitar-webrtc)
@@ -236,6 +237,30 @@ For example, go to (and copy a proxy):
     nordvpn login
     nordvpn connect {country/group}
 
+### 🌐 NordVPN + OpenVPN
+
+[Connect to NordVPN with OpenVPN using Linux Terminal](https://support.nordvpn.com/Connectivity/Linux/1047409422/Connect-to-NordVPN-using-Linux-Terminal.htm)
+
+1. Disable [IPV6](https://support.nordvpn.com/Connectivity/Linux/1047409212/How-to-disable-IPv6-on-Linux.htm)
+
+    ```sh
+    sudo nano /etc/sysctl.conf
+
+    # Add the following at the bottom of the file:
+    net.ipv6.conf.all.disable_ipv6 = 1
+    net.ipv6.conf.default.disable_ipv6 = 1
+    net.ipv6.conf.lo.disable_ipv6 = 1
+    net.ipv6.conf.tun0.disable_ipv6 = 1
+
+    # Save and Reboot your device.
+    # To re-enable IPv6, remove the above lines from /etc/sysctl.conf and reboot your device.
+    ```
+
+2. Only after disabling IPV6, install the OpenVPN client by entering:
+
+    ```sh
+    sudo apt-get install openvpn
+    ```
 
 ### 📹 WebRTC
 
