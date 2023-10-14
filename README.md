@@ -30,6 +30,10 @@
       - [2. Efectos de habilitar/deshabilitar WebRTC](#2-efectos-de-habilitardeshabilitar-webrtc)
       - [3. ¿Qué sucede si desactivo WebRTC?](#3-qué-sucede-si-desactivo-webrtc)
       - [4. ¿Debería desactivar WebRTC?](#4-debería-desactivar-webrtc)
+  - [🔧 MAC Changer](#-mac-changer)
+    - [Por qué no cambiar la dirección MAC puede ser una vulnerabilidad:](#por-qué-no-cambiar-la-dirección-mac-puede-ser-una-vulnerabilidad)
+    - [¿Por qué la dirección MAC no deja la red local?](#por-qué-la-dirección-mac-no-deja-la-red-local)
+    - [¿Por qué no tiene sentido cambiar la dirección MAC en una máquina virtual?](#por-qué-no-tiene-sentido-cambiar-la-dirección-mac-en-una-máquina-virtual)
 
 </details>
 
@@ -316,3 +320,49 @@ Si `media.peerconnection.enabled` está configurado en `false`, algunas de las f
 Si valoras tu privacidad y quieres asegurarte de que tu dirección IP no sea detectada por sitios web a través de WebRTC, puedes considerar desactivar este ajuste. Sin embargo, ten en cuenta que desactivar WebRTC puede afectar la funcionalidad de aplicaciones y sitios web que dependen de él.
 
 En resumen, desactivar WebRTC puede mejorar la privacidad y seguridad, pero también puede limitar o afectar la funcionalidad de muchos servicios y aplicaciones web modernas que dependen de esta tecnología para la comunicación en tiempo real. Es importante sopesar los pros y contras antes de decidir desactivarlo.
+
+---
+
+## 🔧 MAC Changer
+
+La dirección MAC (Media Access Control) es un identificador único asignado a interfaces de red para comunicaciones en el segmento de red física. Sirve como una dirección de hardware para tu dispositivo en una red local.
+
+### Por qué no cambiar la dirección MAC puede ser una vulnerabilidad:
+
+1. **Rastreo y Monitoreo** (Tracking & Monitoring): 📍
+   - Muchas redes públicas (como las de cafeterías o aeropuertos) pueden rastrear tu dispositivo en función de su dirección MAC. Esto significa que cada vez que te conectas a estas redes, saben que eres tú. Con el tiempo, esto puede ser utilizado para construir un perfil de tus hábitos, ubicaciones y horarios.
+
+2. **Suplantación** (Spoofing & Impersonation): 🎭
+   - Si un atacante conoce la dirección MAC de un dispositivo confiable en una red, potencialmente puede suplantar esa dirección MAC y obtener acceso no autorizado a la red.
+
+3. **Acceso a Datos Históricos** (Historical Data Access): 📜
+   - En ciertos escenarios, los registros de red podrían mantenerse basados en direcciones MAC. Si tu dirección MAC nunca cambia, puede ser más fácil para alguien (con acceso a estos registros) acceder a todos los datos históricos y actividad asociada con tu dispositivo.
+
+4. **Anonimato Reducido**: 🕵️‍♂️
+   - En combinación con otras técnicas de rastreo, una dirección MAC consistente puede reducir aún más el anonimato de un usuario en el ámbito digital.
+
+Por estas razones, cambiar periódicamente tu dirección MAC puede mejorar tu privacidad y seguridad, dificultando que entidades maliciosas rastreen, monitoreen o suplanten tu dispositivo.
+
+### ¿Por qué la dirección MAC no deja la red local?
+
+La dirección MAC es una dirección física utilizada para la comunicación dentro de una red local (LAN). A diferencia de las direcciones IP, que pueden ser utilizadas para rastrear paquetes a medida que viajan por Internet, las direcciones MAC operan en la Capa 2 (Capa de Enlace de Datos) del modelo OSI y no son utilizadas ni requeridas cuando los paquetes salen de la red local. Una vez que un paquete se prepara para ser enviado fuera de la LAN, la dirección MAC del dispositivo original se reemplaza por la dirección MAC del router o gateway. De esta manera, la dirección MAC original nunca deja la LAN y, por lo tanto, no puede ser utilizada para rastrear el tráfico a medida que viaja a través de Internet.
+
+### ¿Por qué no tiene sentido cambiar la dirección MAC en una máquina virtual?
+
+Aunque cambiar la dirección MAC en una VM puede parecer una medida de seguridad, generalmente es innecesario y no brinda los beneficios esperados:
+
+1. **Aislamiento de la Red Host**: 🏠
+   - Las VMs usan adaptadores de red virtuales gestionados por el software de virtualización. Estos se comunican con el adaptador físico del host, así que el router siempre verá la dirección MAC del host, no de la VM.
+
+2. **Configuración Adicional**: ⚙️
+   - Hacer que la nueva dirección MAC sea visible externamente requiere configuraciones complicadas tanto en el software de virtualización como, posiblemente, en el host.
+
+3. **Conflictos de Direcciones**: ❌
+   - Existe el riesgo de configurar accidentalmente una dirección MAC que ya esté en uso, causando conflictos en la red.
+
+4. **Uso Típico de VMs**: 🎯
+   - Las VMs suelen ser para pruebas o desarrollo, donde el tráfico no está expuesto a redes peligrosas, haciendo innecesario el cambio de MAC.
+
+5. **Licencias de Software**: 📜
+   - Cambiar la dirección MAC puede afectar el funcionamiento de software licenciado vinculado a la MAC original.
+
