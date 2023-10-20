@@ -33,7 +33,9 @@
   - [🔧 MAC Changer](#-mac-changer)
     - [Por qué no cambiar la dirección MAC puede ser una vulnerabilidad:](#por-qué-no-cambiar-la-dirección-mac-puede-ser-una-vulnerabilidad)
     - [¿Por qué la dirección MAC no deja la red local?](#por-qué-la-dirección-mac-no-deja-la-red-local)
-    - [¿Por qué no tiene sentido cambiar la dirección MAC en una máquina virtual?](#por-qué-no-tiene-sentido-cambiar-la-dirección-mac-en-una-máquina-virtual)
+    - [¿Por qué no es beneficioso cambiar la dirección MAC en una máquina virtual?](#por-qué-no-es-beneficioso-cambiar-la-dirección-mac-en-una-máquina-virtual)
+    - [¿Cuándo podría ser beneficioso cambiar la dirección MAC?](#cuándo-podría-ser-beneficioso-cambiar-la-dirección-mac)
+    - [Vendor](#vendor)
 
 </details>
 
@@ -347,22 +349,35 @@ Por estas razones, cambiar periódicamente tu dirección MAC puede mejorar tu pr
 
 La dirección MAC es una dirección física utilizada para la comunicación dentro de una red local (LAN). A diferencia de las direcciones IP, que pueden ser utilizadas para rastrear paquetes a medida que viajan por Internet, las direcciones MAC operan en la Capa 2 (Capa de Enlace de Datos) del modelo OSI y no son utilizadas ni requeridas cuando los paquetes salen de la red local. Una vez que un paquete se prepara para ser enviado fuera de la LAN, la dirección MAC del dispositivo original se reemplaza por la dirección MAC del router o gateway. De esta manera, la dirección MAC original nunca deja la LAN y, por lo tanto, no puede ser utilizada para rastrear el tráfico a medida que viaja a través de Internet.
 
-### ¿Por qué no tiene sentido cambiar la dirección MAC en una máquina virtual?
+### ¿Por qué no es beneficioso cambiar la dirección MAC en una máquina virtual?
 
-Aunque cambiar la dirección MAC en una VM puede parecer una medida de seguridad, generalmente es innecesario y no brinda los beneficios esperados:
+No es util cambiar la dirección MAC en una VM suele, puesto que suele ser más problemático que beneficioso debido a:
 
-1. **Aislamiento de la Red Host**: 🏠
-   - Las VMs usan adaptadores de red virtuales gestionados por el software de virtualización. Estos se comunican con el adaptador físico del host, así que el router siempre verá la dirección MAC del host, no de la VM.
-
+1. **Aislamiento de Red**: 🏠
+   - La dirección MAC de la VM no es visible externamente debido al adaptador virtual que se comunica con el host físico.
+   
 2. **Configuración Adicional**: ⚙️
-   - Hacer que la nueva dirección MAC sea visible externamente requiere configuraciones complicadas tanto en el software de virtualización como, posiblemente, en el host.
+   - Requiere ajustes complicados en el software de virtualización y posiblemente en el host.
 
 3. **Conflictos de Direcciones**: ❌
-   - Existe el riesgo de configurar accidentalmente una dirección MAC que ya esté en uso, causando conflictos en la red.
+   - Riesgo de duplicar una dirección MAC existente en la red.
 
-4. **Uso Típico de VMs**: 🎯
-   - Las VMs suelen ser para pruebas o desarrollo, donde el tráfico no está expuesto a redes peligrosas, haciendo innecesario el cambio de MAC.
+4. **Uso Principal de VMs**: 🎯
+   - Las VMs generalmente se usan en entornos aislados, reduciendo la necesidad de cambiar la MAC.
 
 5. **Licencias de Software**: 📜
-   - Cambiar la dirección MAC puede afectar el funcionamiento de software licenciado vinculado a la MAC original.
+   - Algunos softwares pueden dejar de funcionar si cambia su MAC asociada.
 
+### ¿Cuándo podría ser beneficioso cambiar la dirección MAC?
+
+En dispositivos físicos directamente expuestos a redes públicas, como un USB booteable, cambiar la dirección MAC puede mejorar la privacidad y la seguridad al hacer más difícil el rastreo y monitoreo del dispositivo.
+
+### Vendor
+
+Un "vendor" en el contexto de una dirección MAC se refiere al fabricante de la tarjeta de interfaz de red (NIC) u otro dispositivo de red. La dirección MAC es un identificador único de 48 bits asignado a interfaces de red para comunicaciones en la red física.
+
+La dirección MAC se divide en dos partes:
+1. **Identificador Único Organizacional (OUI)**: Los primeros 24 bits de la dirección MAC representan el OUI, que es asignado por la IEEE al fabricante. Esta parte identifica al fabricante del dispositivo de red.
+2. **Identificador del Dispositivo**: Los 24 bits restantes son asignados por el fabricante y sirven como identificador único para el dispositivo de red en sí.
+
+Examinando la parte OUI de una dirección MAC, se puede determinar el fabricante del dispositivo de red. Hay bases de datos y herramientas en línea que ayudan a identificar el fabricante asociado con una dirección MAC particular mediante la comprobación del OUI.
