@@ -381,3 +381,12 @@ La dirección MAC se divide en dos partes:
 2. **Identificador del Dispositivo**: Los 24 bits restantes son asignados por el fabricante y sirven como identificador único para el dispositivo de red en sí.
 
 Examinando la parte OUI de una dirección MAC, se puede determinar el fabricante del dispositivo de red. Hay bases de datos y herramientas en línea que ayudan a identificar el fabricante asociado con una dirección MAC particular mediante la comprobación del OUI.
+
+**Por ejemplo:**
+
+Supongamos que tienes una dirección MAC como `6C:88:14:AB:CD:EF`. 
+
+1. **Identificador Único Organizacional (OUI)**: La parte `6C:88:14` es el OUI, que corresponde al fabricante. Por ejemplo, este OUI podría corresponder a la empresa Apple Inc.
+2. **Identificador del Dispositivo**: La parte `AB:CD:EF` es el identificador único del dispositivo asignado por Apple.
+
+Usando bases de datos en línea o herramientas, puedes buscar el OUI `6C:88:14` para encontrar que corresponde a Apple Inc. Esto indica que este dispositivo de red fue fabricado por Apple.
