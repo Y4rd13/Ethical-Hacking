@@ -20,7 +20,7 @@ class PyMAChanger:
 
     def _run_command(self, *args):
         try:
-            result = subprocess.check_output(args)
+            result = subprocess.check_output(list(args))
             return result.decode("utf-8")
         except subprocess.CalledProcessError as e:
             return None
@@ -53,9 +53,9 @@ class PyMAChanger:
 
     def _get_mac_details(self, mode="current"):
         if mode == "current":
-            result = self._run_command("sudo ifconfig", self.interface)
+            result = self._run_command("sudo", "ifconfig", self.interface)
         elif mode == "permanent":
-            result = self._run_command("sudo ethtool", "-P", self.interface)
+            result = self._run_command("sudo", "ethtool", "-P", self.interface)
         else:
             return None
 
@@ -65,7 +65,8 @@ class PyMAChanger:
         return ":{:02x}:{:02x}:{:02x}".format(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
     def _generate_random_mac(self):
-        return ":".join("{:02x}".format(random.randint(0, 255)) for _ in range(6))
+        first_byte = "{:02x}".format(random.randint(0, 255) & 0xFE)
+        return ":".join([first_byte] + ["{:02x}".format(random.randint(0, 255)) for _ in range(5)])
 
     def get_current_mac(self):
         mac_details = self._get_mac_details("current")
@@ -95,7 +96,7 @@ class PyMAChanger:
         permanent_details = self._get_mac_details("permanent")
         return self._set_interface_mac(permanent_details['mac']) if permanent_details else False
 
-    def set(self, option):
+    def set(self, option, custom_mac=None):
         """
         Set the MAC address of the specified network interface based on the given option.
         
@@ -103,8 +104,10 @@ class PyMAChanger:
         1. Set random vendor MAC of the same kind (same vendor prefix)
         2. Set random vendor MAC of any kind (random vendor prefix)
         3. Set fully random MAC
+        4. Set custom MAC (requires custom_mac parameter)
         
-        :param option: Integer value representing the MAC setting option (1, 2, or 3).
+        :param option: Integer value representing the MAC setting option (1, 2, 3, or 4).
+        :param custom_mac: String representing a custom MAC address for option 4.
         :return: Dictionary containing the new MAC address and its associated manufacturer or None if an error occurs.
         """
         mac_details = self._get_mac_details("current")
@@ -123,11 +126,18 @@ class PyMAChanger:
         elif option == 3:
             new_mac = self._generate_random_mac()
 
+        elif option == 4:
+            if custom_mac and re.match(r"^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$", custom_mac):
+                new_mac = custom_mac
+            else:
+                return None
+
         else:
             return None
 
         success = self._set_interface_mac(new_mac)
         return self.show() if success else None
+
 
 
 pymac = PyMAChanger("eth0")
@@ -136,9 +146,7 @@ print('SHOW')
 print(pymac.show())
 print('----')
 print('SET')
-option = 3
-print(f'option: {option}')
-print(pymac.set(option))
+print(pymac.set(option=4, custom_mac="12:52:b2:13:3e:42"))
 print('----')
 pymac.restore()
 print('RESTORE')
