@@ -36,6 +36,8 @@
     - [¿Por qué no es beneficioso cambiar la dirección MAC en una máquina virtual?](#por-qué-no-es-beneficioso-cambiar-la-dirección-mac-en-una-máquina-virtual)
     - [¿Cuándo podría ser beneficioso cambiar la dirección MAC?](#cuándo-podría-ser-beneficioso-cambiar-la-dirección-mac)
     - [Vendor](#vendor)
+    - [En Virtual Machines](#en-virtual-machines)
+    - [En Máquinas Físicas:](#en-máquinas-físicas)
 
 </details>
 
@@ -196,7 +198,7 @@ Check your DNS leaks at [DNS Leak Test](https://www.dnsleaktest.com/)
 
 ### ⚙️ Import custom proxy to proxychains
 
-_Note: Netherlands have great privacy policy, so you can use them. Same with Germany._
+_💡Note: Netherlands have great privacy policy, so you can use them. Same with Germany._
 
 For example, go to (and copy a proxy):
 
@@ -329,6 +331,7 @@ En resumen, desactivar WebRTC puede mejorar la privacidad y seguridad, pero tamb
 
 La dirección MAC (Media Access Control) es un identificador único asignado a interfaces de red para comunicaciones en el segmento de red física. Sirve como una dirección de hardware para tu dispositivo en una red local.
 
+
 ### Por qué no cambiar la dirección MAC puede ser una vulnerabilidad:
 
 1. **Rastreo y Monitoreo** (Tracking & Monitoring): 📍
@@ -390,3 +393,21 @@ Supongamos que tienes una dirección MAC como `6C:88:14:AB:CD:EF`.
 2. **Identificador del Dispositivo**: La parte `AB:CD:EF` es el identificador único del dispositivo asignado por Apple.
 
 Usando bases de datos en línea o herramientas, puedes buscar el OUI `6C:88:14` para encontrar que corresponde a Apple Inc. Esto indica que este dispositivo de red fue fabricado por Apple.
+
+### En Virtual Machines
+
+En máquinas virtuales, cambiar la dirección MAC puede interrumpir la conexión. Sin embargo, en máquinas físicas o sistemas arrancados desde USB, este problema generalmente no ocurre.
+
+1. **Capa Adicional de Abstracción**: Las máquinas virtuales (VM) funcionan sobre un hipervisor o software de virtualización, que actúa como una capa intermedia entre el sistema operativo de la VM y el hardware físico del host. Esta capa de abstracción maneja las conexiones de red y presenta una "tarjeta de red virtual" a la VM.
+
+2. **Gestión de Redes por el Hipervisor**: Cuando configuras una VM, el hipervisor crea una interfaz de red virtual para esa VM. A menudo, esta interfaz se asigna con una dirección MAC específica. Si cambias la dirección MAC dentro de la VM sin informar al hipervisor, puede causar conflictos o desconexiones ya que el hipervisor podría no reconocer la nueva dirección MAC como válida para esa VM específica.
+
+3. **Políticas de Seguridad**: Algunos hipervisores o sistemas de gestión de VM tienen políticas de seguridad que previenen o alertan sobre cambios en las direcciones MAC para prevenir suplantaciones o ataques en la red virtualizada.
+
+### En Máquinas Físicas:
+
+1. **Acceso Directo al Hardware**: A diferencia de las VM, las máquinas físicas interactúan directamente con el hardware, incluida la tarjeta de red. Cambiar la dirección MAC en este escenario se realiza directamente en la tarjeta de red, sin capas intermedias de abstracción.
+
+2. **Sin Políticas de Hipervisor**: Ya que no hay un hipervisor involucrado, no hay políticas adicionales o reglas de gestión de red que puedan interferir o desconectar la conexión cuando cambias la dirección MAC.
+
+3. **Persistencia**: En máquinas físicas o sistemas arrancados desde USB, la dirección MAC original de la tarjeta de red sigue siendo la misma tras reiniciar el dispositivo, a menos que se realice un cambio permanente. Esto no siempre es el caso en VMs, donde el hipervisor podría revertir a la dirección MAC original asignada a la VM tras un reinicio.
