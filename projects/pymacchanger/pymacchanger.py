@@ -53,9 +53,9 @@ class PyMAChanger:
 
     def _get_mac_details(self, mode="current"):
         if mode == "current":
-            result = self._run_command("ifconfig", self.interface)
+            result = self._run_command("sudo ifconfig", self.interface)
         elif mode == "permanent":
-            result = self._run_command("ethtool", "-P", self.interface)
+            result = self._run_command("sudo ethtool", "-P", self.interface)
         else:
             return None
 
@@ -128,7 +128,6 @@ class PyMAChanger:
 
         success = self._set_interface_mac(new_mac)
         return self.show() if success else None
-
 
 
 pymac = PyMAChanger("eth0")
