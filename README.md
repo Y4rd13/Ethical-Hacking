@@ -398,6 +398,8 @@ Usando bases de datos en línea o herramientas, puedes buscar el OUI `6C:88:14` 
 
 En máquinas virtuales, cambiar la dirección MAC puede interrumpir la conexión. Sin embargo, en máquinas físicas o sistemas arrancados desde USB, este problema generalmente no ocurre.
 
+_Note: en el caso de VirtualBox, la direccion MAC puede ser cambiada en la configuracion de VM_
+
 1. **Capa Adicional de Abstracción**: Las máquinas virtuales (VM) funcionan sobre un hipervisor o software de virtualización, que actúa como una capa intermedia entre el sistema operativo de la VM y el hardware físico del host. Esta capa de abstracción maneja las conexiones de red y presenta una "tarjeta de red virtual" a la VM.
 
 2. **Gestión de Redes por el Hipervisor**: Cuando configuras una VM, el hipervisor crea una interfaz de red virtual para esa VM. A menudo, esta interfaz se asigna con una dirección MAC específica. Si cambias la dirección MAC dentro de la VM sin informar al hipervisor, puede causar conflictos o desconexiones ya que el hipervisor podría no reconocer la nueva dirección MAC como válida para esa VM específica.
