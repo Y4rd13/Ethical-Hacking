@@ -463,6 +463,15 @@ Luego para obtener la información del archivo:
 
 - `awk`: Es una herramienta de procesamiento de texto que permite extraer información de archivos de texto. En este caso, se utiliza para extraer la dirección IP de la salida del escaneo. Donde `-F` es el delimitador y `$2` es el número de columna.
 
+Luego puedes usar el archivo de salida para realizar un escaneo de puertos en las direcciones IP que se encontraron:
+
+      nmap -iL {{input_file}} -vv
+
+      Por ejemplo:
+      nmap -iL SCAN2 -vv
+
+- `iL`: Permite leer las direcciones IP de un archivo de entrada.
+
 ### 🛡️ Escaneo de Detección de OS
 
 Para detectar el sistema operativo de la máquina objetivo:
