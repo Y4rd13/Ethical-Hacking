@@ -38,6 +38,13 @@
     - [Vendor](#vendor)
     - [En Virtual Machines](#en-virtual-machines)
     - [En Máquinas Físicas:](#en-máquinas-físicas)
+  - [🔍 Nmap](#-nmap)
+    - [🌐 Escaneo Básico](#-escaneo-básico)
+    - [🔍 Escaneo Detallado con Versiones de Servicios](#-escaneo-detallado-con-versiones-de-servicios)
+    - [🧠 Escaneo Avanzado con Nmap](#-escaneo-avanzado-con-nmap)
+    - [🛡️ Escaneo de Detección de OS](#️-escaneo-de-detección-de-os)
+    - [📡 nslookup: Resolución de Nombres a IPs](#-nslookup-resolución-de-nombres-a-ips)
+    - [📖 Aprender Más](#-aprender-más)
 
 </details>
 
@@ -413,3 +420,59 @@ _Note: en el caso de VirtualBox, la direccion MAC puede ser cambiada en la confi
 2. **Sin Políticas de Hipervisor**: Ya que no hay un hipervisor involucrado, no hay políticas adicionales o reglas de gestión de red que puedan interferir o desconectar la conexión cuando cambias la dirección MAC.
 
 3. **Persistencia**: En máquinas físicas o sistemas arrancados desde USB, la dirección MAC original de la tarjeta de red sigue siendo la misma tras reiniciar el dispositivo, a menos que se realice un cambio permanente. Esto no siempre es el caso en VMs, donde el hipervisor podría revertir a la dirección MAC original asignada a la VM tras un reinicio.
+
+
+## 🔍 Nmap
+
+Nmap (Network Mapper) es una herramienta para exploración de red y auditoría de seguridad. Permite descubrir dispositivos que se están ejecutando en una red y encontrar puertos abiertos junto con varios atributos de la red. Nmap es ampliamente utilizado en el mundo del hacking ético para descubrir puntos vulnerables en la red.
+
+### 🌐 Escaneo Básico
+
+Para escanear una dirección IP o un dominio:
+  
+      nmap {{target_ip_or_domain}}
+
+🎯 Escaneo de Puertos Específicos:
+
+      nmap -p {{port}} {{target_ip_or_domain}}
+      nmap -p 22,80,443 {{target_ip_or_domain}}
+
+### 🔍 Escaneo Detallado con Versiones de Servicios
+
+Para obtener información detallada sobre los servicios que se están ejecutando en los puertos abiertos:
+
+      nmap -sV {{target_ip_or_domain}}
+
+### 🧠 Escaneo Avanzado con Nmap
+
+Para llevar a cabo un escaneo detallado y avanzado en una dirección IP o dominio, se puede utilizar el siguiente comando:
+
+      nmap -v -A {{target_ip_or_domain}}
+  
+- `-v`: Incrementa el nivel de verbosidad, permitiendo ver más detalles sobre lo que Nmap está haciendo durante el escaneo.
+- `-A`: Realiza una detección avanzada, incluyendo la detección de sistema operativo, versión de servicios, detección de scripts y traceroute.
+
+Para guardar la salida del escaneo en un archivo (Grepable Format):
+
+      nmap -oG {{target_ip_or_domain}} > {{output_file}}
+
+### 🛡️ Escaneo de Detección de OS
+
+Para detectar el sistema operativo de la máquina objetivo:
+
+      nmap -O {{target_ip_or_domain}}
+
+### 📡 nslookup: Resolución de Nombres a IPs
+
+Antes de realizar un escaneo con Nmap, es posible que desees resolver un nombre de dominio a una dirección IP o viceversa. `nslookup` es una herramienta que permite hacer justamente eso.
+
+Para resolver un nombre de dominio a una dirección IP:
+
+      nslookup {{target_ip_or_domain}}
+
+`nslookup` es útil para verificar que estás escaneando el objetivo correcto o para obtener información adicional sobre un dominio o dirección IP antes de realizar un escaneo más invasivo con Nmap.
+
+### 📖 Aprender Más
+Nmap es una herramienta poderosa con muchas características y opciones. Para aprender más sobre cómo usar Nmap, consulta la página man o la [documentacion de Nmap](https://nmap.org/docs.html).
+
+      man nmap
