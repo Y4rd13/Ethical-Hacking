@@ -454,7 +454,14 @@ Para llevar a cabo un escaneo detallado y avanzado en una dirección IP o domini
 
 Para guardar la salida del escaneo en un archivo (Grepable Format):
 
-      nmap -oG {{target_ip_or_domain}} > {{output_file}}
+      nmap -oG {{target_ip_or_domain}} > {{output_file}} (/home/SCAN)
+
+Luego para obtener la información del archivo:
+
+      cat {{input_file}} | grep {{grep_value}} | awk -F "{{delimiter}}" '{print $column_number}' > {{output_file}}
+      cat /home/SCAN | grep Up | awk -F " " '{print $2}' > SCAN2
+
+- `awk`: Es una herramienta de procesamiento de texto que permite extraer información de archivos de texto. En este caso, se utiliza para extraer la dirección IP de la salida del escaneo. Donde `-F` es el delimitador y `$2` es el número de columna.
 
 ### 🛡️ Escaneo de Detección de OS
 
