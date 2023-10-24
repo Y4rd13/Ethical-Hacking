@@ -45,6 +45,8 @@
     - [🛡️ Escaneo de Detección de OS](#️-escaneo-de-detección-de-os)
     - [📡 nslookup: Resolución de Nombres a IPs](#-nslookup-resolución-de-nombres-a-ips)
     - [📖 Aprender Más](#-aprender-más)
+- [Attacking wireless networks](#attacking-wireless-networks)
+  - [Intro to wifi hacker cracking WPA/WPA2](#intro-to-wifi-hacker-cracking-wpawpa2)
 
 </details>
 
@@ -492,3 +494,11 @@ Para resolver un nombre de dominio a una dirección IP:
 Nmap es una herramienta poderosa con muchas características y opciones. Para aprender más sobre cómo usar Nmap, consulta la página man o la [documentacion de Nmap](https://nmap.org/docs.html).
 
       man nmap
+
+
+---
+
+# Attacking wireless networks
+
+## Intro to wifi hacker cracking WPA/WPA2
+
