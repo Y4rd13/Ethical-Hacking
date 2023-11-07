@@ -45,9 +45,9 @@
     - [🛡️ Escaneo de Detección de OS](#️-escaneo-de-detección-de-os)
     - [📡 nslookup: Resolución de Nombres a IPs](#-nslookup-resolución-de-nombres-a-ips)
     - [📖 Aprender Más](#-aprender-más)
-- [📶 Wi-Fi Hacking and Wi-Fi Hacker training](#-wi-fi-hacking-and-wi-fi-hacker-training)
-- [Breaking WPA/WPA2 encryption](#breaking-wpawpa2-encryption)
-- [Resumen de comandos para WPA/WPA2 hacking encryption](#resumen-de-comandos-para-wpawpa2-hacking-encryption)
+  - [📶 Wi-Fi Hacking and Wi-Fi Hacker training](#-wi-fi-hacking-and-wi-fi-hacker-training)
+    - [Breaking WPA/WPA2 encryption](#breaking-wpawpa2-encryption)
+      - [Resumen de comandos para WPA/WPA2 hacking encryption](#resumen-de-comandos-para-wpawpa2-hacking-encryption)
 
 </details>
 
@@ -500,11 +500,11 @@ Nmap es una herramienta poderosa con muchas características y opciones. Para ap
 ---
 
 
-# 📶 Wi-Fi Hacking and Wi-Fi Hacker training
+## 📶 Wi-Fi Hacking and Wi-Fi Hacker training
 
 El hacking de redes Wi-Fi puede ser una actividad crucial en el campo del pentesting y la seguridad informática. El objetivo es entender y asegurar las redes inalámbricas de posibles vulnerabilidades y ataques.
 
-# Breaking WPA/WPA2 encryption
+### Breaking WPA/WPA2 encryption
 
 Para probar la seguridad de una red Wi-Fi con encriptación WPA/WPA2, sigue los siguientes pasos:
 
@@ -534,7 +534,7 @@ Para probar la seguridad de una red Wi-Fi con encriptación WPA/WPA2, sigue los 
     ```
 
 
-# Resumen de comandos para WPA/WPA2 hacking encryption
+#### Resumen de comandos para WPA/WPA2 hacking encryption
 
 Sigue esta secuencia de comandos para realizar un ataque de prueba a una red Wi-Fi con encriptación WPA/WPA2:
 
