@@ -2,6 +2,7 @@ import re
 import json
 import random
 import subprocess
+import argparse
 
 class PyMAChanger:
     def __init__(self, interface):
@@ -138,17 +139,36 @@ class PyMAChanger:
         success = self._set_interface_mac(new_mac)
         return self.show() if success else None
 
+    def parse_arguments():
+        parser = argparse.ArgumentParser(description="Change and manage MAC addresses")
+
+        parser.add_argument("-i", "--interface", required=True, help="Specify the network interface to work with.")
+
+        parser.add_argument("-s", "--show", action="store_true", help="Show the current and permanent MAC addresses of the specified interface.")
+
+        parser.add_argument("-r", "--restore", action="store_true", help="Restore the MAC address of the specified interface to its original (permanent) value.")
+
+        parser.add_argument("-set", "--set", type=int, choices=[1, 2, 3, 4], help="Set the MAC address based on the given option: "
+                                                                                 "1 - Set a random MAC address with the same vendor prefix as the current MAC. "
+                                                                                 "2 - Set a random MAC address with a random vendor prefix. "
+                                                                                 "3 - Set a completely random MAC address. "
+                                                                                 "4 - Set a custom MAC address (requires the -m option with a valid MAC address).")
+
+        parser.add_argument("-m", "--mac", type=str, help="Custom MAC address to use with option 4 for setting a specific MAC address.")
+
+        return parser.parse_args()
 
 
-pymac = PyMAChanger("eth0")
-print('----')
-print('SHOW')
-print(pymac.show())
-print('----')
-print('SET')
-print(pymac.set(option=4, custom_mac="12:52:b2:13:3e:42"))
-print('----')
-pymac.restore()
-print('RESTORE')
-print(pymac.show())
-print('----')
+if __name__ == "__main__":
+    args = PyMAChanger.parse_arguments()
+
+    pymac = PyMAChanger(args.interface)
+
+    if args.show:
+        print(pymac.show())
+    elif args.restore:
+        pymac.restore()
+        print(pymac.show())
+        print(f'MAC successfully restored for {args.interface}')
+    elif args.set:
+        print(pymac.set(option=args.set, custom_mac=args.mac if args.mac else None))
