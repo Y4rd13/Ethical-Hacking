@@ -23,8 +23,13 @@ class AirodumpHandler:
 
         self.ap_df = pd.read_csv(self.csv_path, skiprows=1, nrows=start_index_clients_df - 2, on_bad_lines='skip')
         self.ap_df.columns = [col.strip() for col in self.ap_df.columns]
+        self.ap_df['BSSID'] = self.ap_df['BSSID'].apply(lambda x: x.strip())
+
         self.clients_df = pd.read_csv(self.csv_path, skiprows=start_index_clients_df, on_bad_lines='skip')
         self.clients_df.columns = [col.strip() for col in self.clients_df.columns]
+        self.clients_df['BSSID'] = self.clients_df['BSSID'].apply(lambda x: x.strip())
+        # print(self.ap_df['BSSID'].to_list())
+        # print(self.clients_df['BSSID'].to_list())
 
     def save_as_csv(self, path_ap_df="airo-access_points.csv", path_clients_df="airo-clients.csv"):
         if self.ap_df is not None and self.clients_df is not None:
@@ -69,20 +74,30 @@ class AirodumpHandler:
             List of BSSIDs to exclude.
         exclude_essid : list
             List of regular expressions to exclude specific ESSIDs.
+        client_n : int or None
+            Minimum number of clients required for an access point to be considered.
 
         Returns
         -------
         DataFrame
             A DataFrame containing the top 'n' most vulnerable access points.
         """
-        if self.ap_df is None:
-            raise ValueError("Access Points DataFrame is not available. Process the CSV file first.")
+        if self.ap_df is None or self.clients_df is None:
+            raise ValueError("DataFrames are not available. Process the CSV file first.")
 
-        vulnerables = self.ap_df.copy()
+        # Filter by common BSSIDs
+        df_ap_filtered, df_cli_filtered = self.filter_by_common_bssid()
 
-        client_count = self.clients_df['BSSID'].value_counts()
-        vulnerables['Client_Count'] = vulnerables['BSSID'].map(client_count).fillna(0)
-        
+        # Count the number of clients associated with each BSSID
+        client_count = df_cli_filtered['BSSID'].value_counts()
+        df_ap_filtered['Client_Count'] = df_ap_filtered['BSSID'].map(client_count).fillna(0)
+
+        # Filter APs with at least client_n clients if client_n is not None
+        if client_n is not None:
+            df_ap_filtered = df_ap_filtered[df_ap_filtered['Client_Count'] >= client_n]
+
+        # Apply additional filters to the filtered AP DataFrame
+        vulnerables = df_ap_filtered.copy()
 
         # Exclude specific protocols using exact match
         for protocol in exclude_protocol:
@@ -124,33 +139,28 @@ class AirodumpHandler:
 
         return top_vulnerables
 
-    # def get_related_clients(self, top_vulnerables):
-    #     """
-    #     Obtener clientes relacionados con los puntos de acceso vulnerables más destacados.
+    def filter_by_common_bssid(self):
+        """
+        Filters the access point and client dataframes based on common BSSIDs.
 
-    #     Parámetros
-    #     ----------
-    #     top_vulnerables : DataFrame
-    #         DataFrame que contiene los puntos de acceso vulnerables más destacados.
+        :return: Two filtered DataFrames, one for access points and one for clients.
+        """
+        df_ap = self.ap_df
+        df_cli = self.clients_df
 
-    #     Devuelve
-    #     -------
-    #     DataFrame
-    #         Un DataFrame que contiene los clientes relacionados con los puntos de acceso vulnerables más destacados.
-    #     """
-    #     if self.clients_df is None:
-    #         raise ValueError("El DataFrame de clientes no está disponible. Procesa primero el archivo CSV.")
+        # Filter the client dataframe to exclude those not associated with a BSSID
+        df_cli_filtered = df_cli[df_cli['BSSID'] != '(not associated)']
 
-    #     # Asegurarse de que los BSSID de top_vulnerables estén en un formato que pueda ser comparado correctamente
-    #     bssids_vulnerables = set(top_vulnerables['BSSID'].dropna())
+        # Find common BSSIDs between access points and clients
+        common_bssids = set(df_ap['BSSID']).intersection(set(df_cli_filtered['BSSID']))
 
-    #     # Filtrar clientes basándose en los BSSID presentes en los AP vulnerables
-    #     related_clients = self.clients_df[self.clients_df['BSSID'].apply(lambda x: x in bssids_vulnerables)]
+        # Filter the dataframes based on common BSSIDs
+        df_ap_filtered = df_ap[df_ap['BSSID'].isin(common_bssids)]
+        df_cli_filtered = df_cli_filtered[df_cli_filtered['BSSID'].isin(common_bssids)]
 
-    #     # Agregar un conteo de clientes para cada BSSID
-    #     related_clients['Client_Count'] = related_clients.groupby('BSSID')['Station MAC'].transform('count')
+        return df_ap_filtered, df_cli_filtered
 
-    #     return related_clients
+
 
 # Using the class
 csv_path = "airodump_sample-01.csv"  # Replace with the path to your CSV file
@@ -160,14 +170,19 @@ handler = AirodumpHandler(csv_path)
 handler.process_csv()
 
 # Display Dataframes AP and clients
-handler.display_dataframes()
+#handler.display_dataframes()
 
 # Save the dataframes as CSV or JSON if desired
 handler.save_as_csv('access_points.csv', 'clients.csv')
 #handler.save_as_json('access_points.json', 'clients.json')
 
 # Top vulnerables AP
-top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=['OPN', 'WPA'], essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
-
 print(f'\nTop vulnerable AP')
+top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=['OPN', 'WPA'], essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
 print(top_vulnerables)
+
+
+# common bssid
+# df_ap_filtered, df_cli_filtered = handler.filter_by_common_bssid()
+# print(df_ap_filtered)
+# print(df_cli_filtered)
