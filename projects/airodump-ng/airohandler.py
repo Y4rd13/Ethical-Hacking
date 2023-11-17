@@ -163,7 +163,8 @@ class AirodumpHandler:
 
 
 # Using the class
-csv_path = "data/airodump_sample-01.csv"  # Replace with the path to your CSV file
+#csv_path = "data/airodump_sample-01.csv"  # Replace with the path to your CSV file
+csv_path = "data/airodump_sample-02.csv"  # Replace with the path to your CSV file
 handler = AirodumpHandler(csv_path)
 
 # Process CSV
@@ -178,7 +179,8 @@ handler.save_as_csv('output/airo-access_points.csv', 'output/airo-clients.csv')
 
 # Top vulnerables AP
 print(f'\nTop vulnerable AP')
-top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=['OPN', 'WPA'], essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
+exclude_protocol = []# ['OPN', 'WPA']
+top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=exclude_protocol, essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
 print(top_vulnerables)
 
 # common bssid
