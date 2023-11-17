@@ -181,7 +181,6 @@ print(f'\nTop vulnerable AP')
 top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=['OPN', 'WPA'], essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
 print(top_vulnerables)
 
-
 # common bssid
 # df_ap_filtered, df_cli_filtered = handler.filter_by_common_bssid()
 # print(df_ap_filtered)
