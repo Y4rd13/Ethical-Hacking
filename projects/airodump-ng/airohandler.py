@@ -1,4 +1,6 @@
 import re
+import json
+import argparse
 import pandas as pd
 
 class AirodumpHandler:
@@ -160,30 +162,87 @@ class AirodumpHandler:
 
         return df_ap_filtered, df_cli_filtered
 
+    @staticmethod
+    def parse_arguments():
+        parser = argparse.ArgumentParser(description="Process and analyze Airodump CSV data.")
+        parser.add_argument("--csv_path", help="Path to the Airodump CSV file. Only required without --start.")
+        parser.add_argument("-s", "--show", action="store_true", help="Display the top rows of the Access Points and Clients DataFrames.")
+        parser.add_argument("--save", choices=['csv', 'json'], help="Save the processed data in either CSV or JSON format. Saved in output as airo-client.csv and airo-access_points.csv")
+        parser.add_argument("-t", "--top_n", type=int, default=5, help="Display the top N most vulnerable access points.")
+        parser.add_argument("-ep", "--exclude_protocol", nargs='*', default=[], help="List of encryption protocols to exclude.")
+        parser.add_argument("-ek", "--essid_key", action="store_true", help="Include only networks with a non-empty ESSID.")
+        parser.add_argument("-eb", "--exclude_bssid", nargs='*', default=[], help="List of BSSIDs to exclude.")
+        parser.add_argument("-ee", "--exclude_essid", nargs='*', default=[], help="List of regular expressions to exclude specific ESSIDs.")
+        parser.add_argument("-cn", "--client_n", type=int, help="Minimum number of clients required for an access point to be considered.")
+        parser.add_argument("--start", action="store_true", help="Start AirodumpHandler from config.json configuration file.")
+
+        return parser.parse_args()
 
 
-# Using the class
-#csv_path = "data/airodump_sample-01.csv"  # Replace with the path to your CSV file
-csv_path = "data/airodump_sample-02.csv"  # Replace with the path to your CSV file
-handler = AirodumpHandler(csv_path)
+# # Using the class
+# #csv_path = "data/airodump_sample-01.csv"  # Replace with the path to your CSV file
+# csv_path = "data/airodump_sample-02.csv"  # Replace with the path to your CSV file
+# handler = AirodumpHandler(csv_path)
 
-# Process CSV
-handler.process_csv()
+# # Process CSV
+# handler.process_csv()
 
-# Display Dataframes AP and clients
-#handler.display_dataframes()
+# # Display Dataframes AP and clients
+# #handler.display_dataframes()
 
-# Save the dataframes as CSV or JSON if desired
-handler.save_as_csv('output/airo-access_points.csv', 'output/airo-clients.csv')
-#handler.save_as_json('access_points.json', 'clients.json')
+# # Save the dataframes as CSV or JSON if desired
+# handler.save_as_csv('output/airo-access_points.csv', 'output/airo-clients.csv')
+# #handler.save_as_json('access_points.json', 'clients.json')
 
-# Top vulnerables AP
-print(f'\nTop vulnerable AP')
-exclude_protocol = []# ['OPN', 'WPA']
-top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=exclude_protocol, essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
-print(top_vulnerables)
+# # Top vulnerables AP
+# print(f'\nTop vulnerable AP')
+# exclude_protocol = []# ['OPN', 'WPA']
+# top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=exclude_protocol, essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
+# print(top_vulnerables)
 
-# common bssid
-# df_ap_filtered, df_cli_filtered = handler.filter_by_common_bssid()
-# print(df_ap_filtered)
-# print(df_cli_filtered)
+# # common bssid
+# # df_ap_filtered, df_cli_filtered = handler.filter_by_common_bssid()
+# # print(df_ap_filtered)
+# # print(df_cli_filtered)
+
+if __name__ == "__main__":
+    args = AirodumpHandler.parse_arguments()
+
+    if args.start:
+        with open("./config.json", 'r') as file:
+            config = json.load(file)
+
+            csv_path = config['csv_path']
+    else:
+        csv_path = args.csv_path
+
+
+    handler = AirodumpHandler(csv_path)
+    handler.process_csv()
+
+    if args.show:
+        handler.display_dataframes()
+
+    if args.save == 'csv':
+        handler.save_as_csv()
+    elif args.save == 'json':
+        handler.save_as_json()
+
+    if args.top_n:
+        top_vulnerables = handler.top_n_vulnerables(top_n=args.top_n,
+                                                    client_n=args.client_n,
+                                                    exclude_protocol=args.exclude_protocol,
+                                                    essid_key=args.essid_key,
+                                                    exclude_bssid=args.exclude_bssid,
+                                                    exclude_essid=args.exclude_essid)
+        print(f'\nTop {args.top_n} Vulnerable Access Points:\n', top_vulnerables)
+    
+    if args.start:
+        top_vulnerables = handler.top_n_vulnerables(top_n=config.get('top_n', 5),
+                        save_to_csv=config.get('save_to_csv', False),
+                        exclude_protocol=config.get('exclude_protocol', []),
+                        essid_key=config.get('essid_key', False),
+                        exclude_bssid=config.get('exclude_bssid', []),
+                        exclude_essid=config.get('exclude_essid', []),
+                        client_n=config.get('client_n', None))
+        print(f'\nTop {args.top_n} Vulnerable Access Points:\n', top_vulnerables)
