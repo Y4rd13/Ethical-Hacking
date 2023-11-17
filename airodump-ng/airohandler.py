@@ -163,8 +163,8 @@ handler.process_csv()
 handler.display_dataframes()
 
 # Save the dataframes as CSV or JSON if desired
-#handler.save_as_csv('access_points.csv', 'clients.csv')
-# handler.save_as_json('access_points.json', 'clients.json')
+handler.save_as_csv('access_points.csv', 'clients.csv')
+#handler.save_as_json('access_points.json', 'clients.json')
 
 # Top vulnerables AP
 top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=['OPN', 'WPA'], essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
