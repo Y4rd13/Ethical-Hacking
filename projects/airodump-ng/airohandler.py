@@ -204,6 +204,7 @@ class AirodumpHandler:
 
     @staticmethod
     def score_speed(speed):
+        speed = int(speed)
         if speed <= 54:  # 802.11g o inferior
             return 4
         elif speed <= 150:  # 802.11n

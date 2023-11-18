@@ -6,5 +6,5 @@
     "exclude_bssid": ["B0:EC:DD:71:BB:48"],
     "exclude_essid": ["iphone"],
     "save_to_csv": true,
-    "csv_path": "./data/airodump_sample-01.csv"
+    "csv_path": "./data/airodump_sample-02.csv"
 }
