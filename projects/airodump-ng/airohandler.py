@@ -33,7 +33,7 @@ class AirodumpHandler:
         # print(self.ap_df['BSSID'].to_list())
         # print(self.clients_df['BSSID'].to_list())
 
-    def save_as_csv(self, path_ap_df="airo-access_points.csv", path_clients_df="airo-clients.csv"):
+    def save_as_csv(self, path_ap_df="./output/airo-access_points.csv", path_clients_df="./output/airo-clients.csv"):
         if self.ap_df is not None and self.clients_df is not None:
             self.ap_df.to_csv(path_ap_df, index=False)
             self.clients_df.to_csv(path_clients_df, index=False)
@@ -120,20 +120,24 @@ class AirodumpHandler:
 
         # Assign a vulnerability score
         vulnerables['Vulnerability_Score'] = 0
-        vulnerables['Vulnerability_Score'] += vulnerables['Privacy'].apply(lambda x: 2 if 'WPA' in x and not 'WPA2' in x and not 'WPA3' in x else 1)
-        vulnerables['Vulnerability_Score'] += vulnerables['Privacy'].apply(lambda x: 3 if 'OPN' in x else 0)
-        vulnerables['Vulnerability_Score'] += vulnerables['Power'].apply(lambda x: 1 if x > -50 else 0)
-        max_ivs = vulnerables['# IV'].max()
-        vulnerables['Vulnerability_Score'] += vulnerables['# IV'].apply(lambda x: (x / max_ivs) * 2 if max_ivs > 0 else 0)
+        vulnerables['Vulnerability_Score'] += vulnerables.apply(self.score_privacy_cipher, axis=1)
+        vulnerables['Vulnerability_Score'] += vulnerables['Power'].apply(self.score_power)
+        vulnerables['Vulnerability_Score'] += vulnerables.apply(self.score_visibility_duration, axis=1)
+        vulnerables['Vulnerability_Score'] += vulnerables['Speed'].apply(self.score_speed)
+        vulnerables['Vulnerability_Score'] += vulnerables.apply(self.score_iv_beacons, axis=1)
+        vulnerables['Vulnerability_Score'] += vulnerables.apply(self.score_essid_key, axis=1)
 
         # Assign vulnerability level based on Vulnerability_Score
         max_score = vulnerables['Vulnerability_Score'].max()
-        bins = [0, max_score*0.1, max_score*0.3, max_score*0.5, max_score*0.7, max_score*0.9, max_score, max_score*2]
-        labels = ['Zero', 'Lowest', 'Low', 'Medium', 'High', 'Highest', 'Critical']
+        bins = [0, max_score*0.1, max_score*0.2, max_score*0.4, max_score*0.6, max_score*0.8, max_score, max_score*1.2]
+        labels = ['Zero', 'Very Low', 'Low', 'Medium', 'High', 'Very High', 'Critical']
         vulnerables['Vulnerability_level'] = pd.cut(vulnerables['Vulnerability_Score'], bins=bins, labels=labels, include_lowest=True)
 
         # Sort by vulnerability score from highest to lowest
-        top_vulnerables = vulnerables.sort_values(by='Vulnerability_Score', ascending=False).head(top_n)
+        top_vulnerables = vulnerables.sort_values(by='Vulnerability_Score', ascending=False)
+
+        if top_n:
+            top_vulnerables = top_vulnerables.head(top_n)
 
         # Save to CSV if required
         if save_to_csv:
@@ -163,6 +167,67 @@ class AirodumpHandler:
         return df_ap_filtered, df_cli_filtered
 
     @staticmethod
+    def score_privacy_cipher(row):
+        privacy_score = 0
+        if 'WEP' in row['Privacy']:
+            privacy_score = 10
+        elif 'WPA' in row['Privacy']:
+            if 'WPA2' not in row['Privacy']:
+                privacy_score = 7
+            else:
+                privacy_score = 5
+        elif 'OPN' in row['Privacy']:
+            privacy_score = 10
+        if 'CCMP' in row['Cipher']:
+            privacy_score -= 2
+        elif 'TKIP' in row['Cipher']:
+            privacy_score -= 1
+        if 'PSK' in row['Authentication']:
+            privacy_score += 1
+        return max(privacy_score, 0)
+
+    @staticmethod
+    def score_power(power):
+        if power > -50:
+            return 4
+        elif power > -70:
+            return 2
+        else:
+            return 1
+
+    @staticmethod
+    def score_visibility_duration(row):
+        first_seen = pd.to_datetime(row['First time seen'])
+        last_seen = pd.to_datetime(row['Last time seen'])
+        duration = (last_seen - first_seen).total_seconds()
+        return min(duration / 3600, 5)  # Máximo 5 puntos por duración
+
+    @staticmethod
+    def score_speed(speed):
+        if speed <= 54:  # 802.11g o inferior
+            return 4
+        elif speed <= 150:  # 802.11n
+            return 2
+        else:  # Velocidades más altas
+            return 1
+
+    @staticmethod
+    def score_iv_beacons(row):
+        iv_score = min(row['# IV'] / 1000, 5)  # Máximo 5 puntos
+        beacon_score = min(row['# beacons'] / 1000, 3)  # Máximo 3 puntos
+        return iv_score + beacon_score
+
+    @staticmethod
+    def score_essid_key(row):
+        essid_score = 0
+        common_essids = ['default', 'linksys', 'netgear', 'dlink', 'tplink']
+        if any(essid in row['ESSID'].lower() for essid in common_essids):
+            essid_score += 3
+        if row['Key'] == '':
+            essid_score += 2
+        return essid_score
+
+    @staticmethod
     def parse_arguments():
         parser = argparse.ArgumentParser(description="Process and analyze Airodump CSV data.")
         parser.add_argument("--csv_path", help="Path to the Airodump CSV file. Only required without --start.")
@@ -178,32 +243,6 @@ class AirodumpHandler:
 
         return parser.parse_args()
 
-
-# # Using the class
-# #csv_path = "data/airodump_sample-01.csv"  # Replace with the path to your CSV file
-# csv_path = "data/airodump_sample-02.csv"  # Replace with the path to your CSV file
-# handler = AirodumpHandler(csv_path)
-
-# # Process CSV
-# handler.process_csv()
-
-# # Display Dataframes AP and clients
-# #handler.display_dataframes()
-
-# # Save the dataframes as CSV or JSON if desired
-# handler.save_as_csv('output/airo-access_points.csv', 'output/airo-clients.csv')
-# #handler.save_as_json('access_points.json', 'clients.json')
-
-# # Top vulnerables AP
-# print(f'\nTop vulnerable AP')
-# exclude_protocol = []# ['OPN', 'WPA']
-# top_vulnerables = handler.top_n_vulnerables(top_n=10, client_n=1, exclude_protocol=exclude_protocol, essid_key=True, exclude_bssid=['B0:EC:DD:71:BB:48'], exclude_essid=['iphone'], save_to_csv=True)
-# print(top_vulnerables)
-
-# # common bssid
-# # df_ap_filtered, df_cli_filtered = handler.filter_by_common_bssid()
-# # print(df_ap_filtered)
-# # print(df_cli_filtered)
 
 if __name__ == "__main__":
     args = AirodumpHandler.parse_arguments()
