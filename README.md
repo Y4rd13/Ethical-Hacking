@@ -48,6 +48,7 @@
   - [📶 Wi-Fi Hacking and Wi-Fi Hacker training](#-wi-fi-hacking-and-wi-fi-hacker-training)
     - [Breaking WPA/WPA2 encryption](#breaking-wpawpa2-encryption)
       - [Resumen de comandos para WPA/WPA2 hacking encryption](#resumen-de-comandos-para-wpawpa2-hacking-encryption)
+      - [Worldlists: https://www.hackingarticles.in/wordlists-for-pentester/#:~:text=%23%20%E3%80%902%E2%80%A0Wordlists%20for%20Pentester%20,the%20wordlists%20that%20you%20use](#worldlists-httpswwwhackingarticlesinwordlists-for-pentestertext2320e380902e280a0wordlists20for20pentester20the20wordlists20that20you20use)
 
 </details>
 
@@ -562,3 +563,5 @@ sudo aircrack-ng [archivo].cap -w /home/kali/Desktop/wordlist.txt # usar la list
 ```
 
 Reemplaza `[canal]`, `[BSSID]`, `[interfaz]`, `[Cliente MAC]` y `[archivo].cap` con los valores correspondientes a tu objetivo y entorno.
+
+#### Worldlists: https://www.hackingarticles.in/wordlists-for-pentester/#:~:text=%23%20%E3%80%902%E2%80%A0Wordlists%20for%20Pentester%20,the%20wordlists%20that%20you%20use
